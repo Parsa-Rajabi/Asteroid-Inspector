@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- TODO    insert Game name here-->
+    <title>BCLN - </title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato">
+    <!-- google web font -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <!--    BLNC Favicon-->
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <!--    BLNC JQuery 3.2.1 on server-->
+    <script src="https://bclearningnetwork.com/lib/jquery/jquery-3.2.1.min.js"></script>
+    <!-- CreateJS library hosted on BCLN server -->
+    <script src="https://bclearningnetwork.com/lib/createjs/createjs-2015.11.26.min.js"></script>
+    <!--    Only enable the following line when slider is needed in game-->
+    <!--    <script src="lib/Slider.js"></script>-->
+    <!-- contains helper functions which do not call functions in gameName.js -->
+    <script type="text/javascript" src="helper.js"></script>
+    <!-- TODO    insert Game name here-->
+    <script type="text/javascript" src="game.js"></script>
+    <!-- the main game JS file -->
+</head>
+
+<body onload="init();">
+
+    <!-- body onload calls function to initialize game -->
+
+    <canvas id="gameCanvas" width="800" height="600">
+		<!-- game will be rendered here -->
+	</canvas>
+
+</body>
+
+</html>
