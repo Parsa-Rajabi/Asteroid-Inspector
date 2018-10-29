@@ -1,8 +1,8 @@
 /**
  * BCLearningNetwork.com
- * [Game Name]   
+ * Asteroid Interceptor
  * @author Parsa Rajabi - ParsaRajabiPR@gmail.com
- * Date [Month/Year]
+ * October 2018
  */
 
 //// VARIABLES ////
