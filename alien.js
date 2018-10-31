@@ -58,6 +58,7 @@ function endGame() {
  */
 function initGraphics() {
 
+    stage.addChild(background);
     initMuteUnMuteButtons();
     initListeners();
 
@@ -100,19 +101,25 @@ function initListeners() {
 
 // bitmap variables
 var muteButton, unmuteButton;
+var background;
 /*
  * Add files to be loaded here.
  */
 function setupManifest() {
     manifest = [
-       {
+        {
             src: "images/mute.png",
             id: "mute"
     },
         {
             src: "images/unmute.png",
             id: "unmute"
+    },
+        {
+            src: "images/background.png",
+            id: "background"
     }
+
  	];
 }
 
@@ -137,7 +144,9 @@ function handleFileLoad(event) {
         muteButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "unmute") {
         unmuteButton = new createjs.Bitmap(event.result);
-    } 
+    } else if (event.item.id == "background") {
+        background = new createjs.Bitmap(event.result);
+    }
 }
 
 function loadError(evt) {
@@ -159,7 +168,6 @@ function loadComplete(event) {
     createjs.Ticker.setFPS(FPS);
     createjs.Ticker.addEventListener("tick", update); // call update function
 
-    stage.addChild(background);
     stage.update();
     initGraphics();
 }
