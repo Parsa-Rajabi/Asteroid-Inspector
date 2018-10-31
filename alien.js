@@ -80,8 +80,8 @@ function initGraphics() {
     // angle slider
     // new Slider(min, max, width, height)
     angleSlider = new Slider(0, 180, 450, 30).set({
-        x: 300,
-        y: 300,
+        x: 180,
+        y: 450,
         value: 0 //default value
     });
 
@@ -103,7 +103,7 @@ function handleAngleSliderChange(evt) {
     //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
     angle = Math.round(evt.target.value*2)/2;
     angleText.text = angle;
-    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
+//    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
     
     //    console.log("angle is " + angle);
 }
