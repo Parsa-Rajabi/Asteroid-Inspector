@@ -11,6 +11,9 @@ var mute = false;
 var FPS = 20;
 var STAGE_WIDTH, STAGE_HEIGHT;
 var gameStarted = false;
+var angleSlider;
+var angleText;
+var angle;
 
 
 // Chrome 1+
@@ -39,7 +42,16 @@ function init() {
 
 
 function update(event) {
-    if (gameStarted) {}
+    if (gameStarted) {
+        
+    //new text(text, font, color)
+    stage.removeChild(angleText);
+    angleText = new createjs.Text(angle , "23px Lato", "#ffffff");
+    angleText.x = 200;
+    angleText.y = 200;
+    stage.addChild(angleText);
+        
+    }
 
     stage.update(event);
 }
@@ -59,12 +71,41 @@ function endGame() {
 function initGraphics() {
 
     stage.addChild(background);
+    
+    container = new createjs.Container();
+    container.x = 200;
+    container.y = 275;
+    stage.addChild(container);
+    
+    // angle slider
+    // new Slider(min, max, width, height)
+    angleSlider = new Slider(0, 180, 450, 30).set({
+        x: 300,
+        y: 300,
+        value: 0 //default value
+    });
+
+
+    angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
+    stage.addChild(angleSlider);
+    
+
+    
     initMuteUnMuteButtons();
     initListeners();
 
     // start the game
     gameStarted = true;
     stage.update();
+}
+
+function handleAngleSliderChange(evt) {
+    //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
+    angle = Math.round(evt.target.value*2)/2;
+    angleText.text = angle;
+    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
+    
+    //    console.log("angle is " + angle);
 }
 
 
