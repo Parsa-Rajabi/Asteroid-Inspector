@@ -14,6 +14,7 @@ var gameStarted = false;
 var angleSlider;
 var angleText;
 var angle;
+var container;
 
 
 // Chrome 1+
@@ -43,14 +44,15 @@ function init() {
 
 function update(event) {
     if (gameStarted) {
-        
-    //new text(text, font, color)
-    stage.removeChild(angleText);
-    angleText = new createjs.Text(angle , "23px Lato", "#ffffff");
-    angleText.x = 650;
-    angleText.y = 450;
-    stage.addChild(angleText);
-        
+
+        //new text(text, font, color)
+        stage.removeChild(angleText);
+        angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
+        angleText.x = 650;
+        angleText.y = 450;
+        stage.addChild(angleText);
+
+        container.rotation = -angle;
     }
 
     stage.update(event);
@@ -71,12 +73,18 @@ function endGame() {
 function initGraphics() {
 
     stage.addChild(background);
-    
+
     container = new createjs.Container();
-    container.x = 200;
-    container.y = 275;
-    stage.addChild(container);
+    container.x = 400;
+    container.y = 400;
     
+//    whiteArrow.x = 200;
+//    whiteArrow.y = 400;
+
+//    stage.addChild(whiteArrow);
+    container.addChild(whiteArrow);
+    stage.addChild(container);
+
     // angle slider
     // new Slider(min, max, width, height)
     angleSlider = new Slider(0, 180, 450, 30).set({
@@ -88,9 +96,9 @@ function initGraphics() {
 
     angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
     stage.addChild(angleSlider);
-    
 
-    
+
+
     initMuteUnMuteButtons();
     initListeners();
 
@@ -101,10 +109,10 @@ function initGraphics() {
 
 function handleAngleSliderChange(evt) {
     //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
-    angle = Math.round(evt.target.value*2)/2;
+    angle = Math.round(evt.target.value * 2) / 2;
     angleText.text = angle;
-//    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
-    
+    //    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
+
     //    console.log("angle is " + angle);
 }
 
@@ -143,6 +151,7 @@ function initListeners() {
 // bitmap variables
 var muteButton, unmuteButton;
 var background;
+var whiteArrow;
 /*
  * Add files to be loaded here.
  */
@@ -159,6 +168,9 @@ function setupManifest() {
         {
             src: "images/background.png",
             id: "background"
+    }, {
+            src: "images/whiteArrow.png",
+            id: "whiteArrow"
     }
 
  	];
@@ -187,6 +199,8 @@ function handleFileLoad(event) {
         unmuteButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "background") {
         background = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "whiteArrow") {
+        whiteArrow = new createjs.Bitmap(event.result);
     }
 }
 
