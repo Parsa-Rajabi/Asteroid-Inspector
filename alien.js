@@ -47,8 +47,8 @@ function update(event) {
     //new text(text, font, color)
     stage.removeChild(angleText);
     angleText = new createjs.Text(angle , "23px Lato", "#ffffff");
-    angleText.x = 200;
-    angleText.y = 200;
+    angleText.x = 650;
+    angleText.y = 450;
     stage.addChild(angleText);
         
     }
