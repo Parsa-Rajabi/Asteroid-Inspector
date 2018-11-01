@@ -48,8 +48,8 @@ function update(event) {
         //new text(text, font, color)
         stage.removeChild(angleText);
         angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
-        angleText.x = 650;
-        angleText.y = 450;
+        angleText.x = 403;
+        angleText.y = 535;
         stage.addChild(angleText);
 
         container.rotation = -angle;
@@ -109,7 +109,7 @@ function initGraphics() {
 
 function handleAngleSliderChange(evt) {
     //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
-    angle = Math.round(evt.target.value * 2) / 2;
+    angle = Math.round(evt.target.value);
     angleText.text = angle;
     //    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
 
@@ -169,7 +169,7 @@ function setupManifest() {
             src: "images/background.png",
             id: "background"
     }, {
-            src: "images/whiteArrow.png",
+            src: "images/whiteArrowShort.png",
             id: "whiteArrow"
     }
 
