@@ -108,9 +108,14 @@ function initGraphics() {
 
 
     //positioning of the fire button
-    fireButton.x = fireButtonPressed.x = 590;
+    fireButton.x = fireButtonPressed.x = 608;
     fireButton.y = fireButtonPressed.y = 50;
     stage.addChild(fireButton);
+    
+    //positioning of the fire button
+    resetButton.x = resetButtonPressed.x = 50;
+    resetButton.y = resetButtonPressed.y = 50;
+    stage.addChild(resetButton);
 
     initMuteUnMuteButtons();
     initListeners();
@@ -128,7 +133,6 @@ function handleAngleSliderChange(evt) {
 
     //    console.log("angle is " + angle);
 }
-
 
 /*
  * Adds the mute and unmute buttons to the stage and defines listeners
@@ -166,10 +170,27 @@ function initListeners() {
     });
     //once pressed, the fire function will be called 
     fireButtonPressed.on("click", fire);
-}
 
+
+ resetButton.on("mouseover", function () {
+        stage.addChild(resetButtonPressed);
+        stage.removeChild(resetButton);
+        playSound("click");
+   
+    resetButtonPressed.on("mouseout", function () {
+        stage.addChild(resetButton);
+        stage.removeChild(resetButtonPressed);
+    });
+    //once pressed, the fire function will be called 
+    resetButtonPressed.on("click", reset);
+
+ });
+}
 function fire(){
     console.log("fire was tapped")
+}
+function reset(){
+    console.log("reset was tapped")
 }
 
 
@@ -182,6 +203,7 @@ var background;
 var whiteArrow;
 var base;
 var  fireButton, fireButtonPressed;
+var  resetButton, resetButtonPressed;
 /*
  * Add files to be loaded here.
  */
@@ -210,6 +232,12 @@ function setupManifest() {
     }, {
             src: "images/fireButtonPressed.png",
             id: "fireButtonPressed"
+    }, {
+            src: "images/resetButton.png",
+            id: "resetButton"
+    }, {
+            src: "images/resetButtonPressed.png",
+            id: "resetButtonPressed"
     }
 
  	];
@@ -242,10 +270,14 @@ function handleFileLoad(event) {
         whiteArrow = new createjs.Bitmap(event.result);
     } else if (event.item.id == "angleBase") {
         angleBase = new createjs.Bitmap(event.result);
-    }else if (event.item.id == "fireButton") {
+    } else if (event.item.id == "fireButton") {
         fireButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "fireButtonPressed") {
         fireButtonPressed = new createjs.Bitmap(event.result);
+    }else if (event.item.id == "resetButton") {
+        resetButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "resetButtonPressed") {
+        resetButtonPressed = new createjs.Bitmap(event.result);
     }
 }
 
