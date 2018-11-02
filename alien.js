@@ -49,7 +49,7 @@ function update(event) {
         stage.removeChild(angleText);
         angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
         angleText.x = 403;
-        angleText.y = 535;
+        angleText.y = 542;
         stage.addChild(angleText);
 
         container.rotation = -angle;
@@ -75,15 +75,24 @@ function initGraphics() {
     stage.addChild(background);
 
     container = new createjs.Container();
-    container.x = 400;
-    container.y = 400;
+    container.x = 410;
+    container.y = 424;
     
 //    whiteArrow.x = 200;
 //    whiteArrow.y = 400;
 
+//    container.addChild(angleBase);
 //    stage.addChild(whiteArrow);
     container.addChild(whiteArrow);
     stage.addChild(container);
+    
+    angleBase.x = 15;
+    angleBase.y = -19;
+    
+    container.regX = -3;
+    container.regY = 7;
+    
+    stage.addChild(angleBase);
 
     // angle slider
     // new Slider(min, max, width, height)
@@ -98,6 +107,10 @@ function initGraphics() {
     stage.addChild(angleSlider);
 
 
+    //positioning of the fire button
+    fireButton.x = fireButtonPressed.x = 590;
+    fireButton.y = fireButtonPressed.y = 50;
+    stage.addChild(fireButton);
 
     initMuteUnMuteButtons();
     initListeners();
@@ -142,6 +155,21 @@ function initMuteUnMuteButtons() {
  */
 function initListeners() {
 
+     fireButton.on("mouseover", function () {
+        stage.addChild(fireButtonPressed);
+        stage.removeChild(fireButton);
+        playSound("click");
+    });
+    fireButtonPressed.on("mouseout", function () {
+        stage.addChild(fireButton);
+        stage.removeChild(fireButtonPressed);
+    });
+    //once pressed, the fire function will be called 
+    fireButtonPressed.on("click", fire);
+}
+
+function fire(){
+    console.log("fire was tapped")
 }
 
 
@@ -152,6 +180,8 @@ function initListeners() {
 var muteButton, unmuteButton;
 var background;
 var whiteArrow;
+var base;
+var  fireButton, fireButtonPressed;
 /*
  * Add files to be loaded here.
  */
@@ -169,8 +199,17 @@ function setupManifest() {
             src: "images/background.png",
             id: "background"
     }, {
-            src: "images/whiteArrowShort.png",
+            src: "images/whiteArrow.png",
             id: "whiteArrow"
+    }, {
+            src: "images/base.png",
+            id: "angleBase"
+    }, {
+            src: "images/fireButton.png",
+            id: "fireButton"
+    }, {
+            src: "images/fireButtonPressed.png",
+            id: "fireButtonPressed"
     }
 
  	];
@@ -201,6 +240,12 @@ function handleFileLoad(event) {
         background = new createjs.Bitmap(event.result);
     } else if (event.item.id == "whiteArrow") {
         whiteArrow = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "angleBase") {
+        angleBase = new createjs.Bitmap(event.result);
+    }else if (event.item.id == "fireButton") {
+        fireButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "fireButtonPressed") {
+        fireButtonPressed = new createjs.Bitmap(event.result);
     }
 }
 
