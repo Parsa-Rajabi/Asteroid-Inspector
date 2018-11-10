@@ -13,9 +13,10 @@ var STAGE_WIDTH, STAGE_HEIGHT;
 var gameStarted = false;
 var angleSlider;
 var angleText;
-var angle;
+var angle = 0;
 var container;
 var inputBox;
+var inputBoxHTML;
 
 
 // Chrome 1+
@@ -52,7 +53,11 @@ function update(event) {
         angleText.x = 403;
         angleText.y = 542;
         stage.addChild(angleText);
-
+//        inputBoxHTML.text = angle;
+//        console.log("value " + inputBox.value);
+//        console.log("text " + inputBox.text);
+//        console.log("angle " + sangle);
+        
         container.rotation = -angle;
 
         updateSelectPositions();
@@ -79,7 +84,7 @@ function initGraphics() {
 
     container = new createjs.Container();
     container.x = 410;
-    container.y = 424;
+    container.y = 473;
 
     //    whiteArrow.x = 200;
     //    whiteArrow.y = 400;
@@ -90,24 +95,24 @@ function initGraphics() {
     stage.addChild(container);
 
     angleBase.x = 15;
-    angleBase.y = -19;
+    angleBase.y = 30;
 
     container.regX = -3;
     container.regY = 7;
 
     stage.addChild(angleBase);
 
-    // angle slider
-    // new Slider(min, max, width, height)
-    angleSlider = new Slider(0, 180, 450, 30).set({
-        x: 180,
-        y: 450,
-        value: 0 //default value
-    });
-
-
-    angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
-    stage.addChild(angleSlider);
+//    // angle slider
+//    // new Slider(min, max, width, height)
+//    angleSlider = new Slider(0, 180, 450, 30).set({
+//        x: 180,
+//        y: 450,
+//        value: 0 //default value
+//    });
+//
+//
+//    angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
+//    stage.addChild(angleSlider);
 
 
     //positioning of the fire button
@@ -121,21 +126,43 @@ function initGraphics() {
     stage.addChild(resetButton);
 
     //textInput
-    var inputBoxHTML = document.createElement('input');
+    inputBoxHTML = document.createElement('input');
     inputBoxHTML.type = "text";
     inputBoxHTML.placeholder = "Enter";
-    inputBoxHTML.id = "pvBox";
+    inputBoxHTML.placeholder.color = "white";
+    inputBoxHTML.id = "inputBox";
     inputBoxHTML.class = "overlayed";
+    //positioning
     inputBoxHTML.style.position = "absolute";
     inputBoxHTML.style.top = 0;
     inputBoxHTML.style.left = 0;
-    inputBoxHTML.style.width = "100px";
+    //width and height
+    inputBoxHTML.style.width = "60px";
+    inputBoxHTML.style.height = "35px";
+    //text background colour
+    inputBoxHTML.style.background = "transparent";
+    //font style
+    inputBoxHTML.style.fontSize = "20px";
+    inputBoxHTML.style.color = "white";
+    inputBoxHTML.maxLength = "3";
+
+    inputBoxHTML.onkeyup = updateAngle;
+    
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
     stage.addChild(inputBox);
     //    inputBox.visible = true;
-    inputBox.htmlElement.style.border = "10px solid red";
+//    inputBox.htmlElement.style.border = "2px solid red";
+    inputBox.htmlElement.style.border = "none";
 
+    
+    
+//    var UserInput = new TextInput();
+//      UserInput.y = UserInput.x = 400;
+//      UserInput.placeHolder = "Input Field";
+//      stage.addChild(UserInput);
+//      // Updates the text field to the new internal data (ie. placeholder)
+//      textField.update();
 
     initMuteUnMuteButtons();
     initListeners();
@@ -145,23 +172,27 @@ function initGraphics() {
     stage.update();
 }
 
+function updateAngle(){
+    angle = inputBoxHTML.value;
+}
+
 function updateSelectPositions() {
     let selectY = 97; // Need to check this in firefox
     if (isChrome) {
-        selectY = 97;
+        selectY = 538;
     }
-    inputBox.x = gameCanvas.getBoundingClientRect().left + 310;
+    inputBox.x = gameCanvas.getBoundingClientRect().left + 95;
     inputBox.y = gameCanvas.getBoundingClientRect().top + selectY
 }
 
-function handleAngleSliderChange(evt) {
-    //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
-    angle = Math.round(evt.target.value);
-    angleText.text = angle;
-    //    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
-
-    //    console.log("angle is " + angle);
-}
+//function handleAngleSliderChange(evt) {
+//    //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
+//    angle = Math.round(evt.target.value);
+//    angleText.text = inputBox.value;
+//    //    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
+//
+//    //    console.log("angle is " + angle);
+//}
 
 /*
  * Adds the mute and unmute buttons to the stage and defines listeners
@@ -217,11 +248,13 @@ function initListeners() {
 }
 
 function fire() {
-    console.log("fire was tapped")
+    console.log("fire was tapped");
+    console.log("was there an update? " + angle);
+    
 }
 
 function reset() {
-    console.log("reset was tapped")
+    console.log("reset was tapped");
 }
 
 
