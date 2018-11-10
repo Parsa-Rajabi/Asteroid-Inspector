@@ -15,6 +15,7 @@ var angleSlider;
 var angleText;
 var angle;
 var container;
+var inputBox;
 
 
 // Chrome 1+
@@ -53,6 +54,8 @@ function update(event) {
         stage.addChild(angleText);
 
         container.rotation = -angle;
+
+        updateSelectPositions();
     }
 
     stage.update(event);
@@ -77,21 +80,21 @@ function initGraphics() {
     container = new createjs.Container();
     container.x = 410;
     container.y = 424;
-    
-//    whiteArrow.x = 200;
-//    whiteArrow.y = 400;
 
-//    container.addChild(angleBase);
-//    stage.addChild(whiteArrow);
+    //    whiteArrow.x = 200;
+    //    whiteArrow.y = 400;
+
+    //    container.addChild(angleBase);
+    //    stage.addChild(whiteArrow);
     container.addChild(whiteArrow);
     stage.addChild(container);
-    
+
     angleBase.x = 15;
     angleBase.y = -19;
-    
+
     container.regX = -3;
     container.regY = 7;
-    
+
     stage.addChild(angleBase);
 
     // angle slider
@@ -108,14 +111,31 @@ function initGraphics() {
 
 
     //positioning of the fire button
-    fireButton.x = fireButtonPressed.x = 608;
-    fireButton.y = fireButtonPressed.y = 50;
+    fireButton.x = fireButtonPressed.x = 250;
+    fireButton.y = fireButtonPressed.y = 500;
     stage.addChild(fireButton);
-    
+
     //positioning of the fire button
-    resetButton.x = resetButtonPressed.x = 50;
-    resetButton.y = resetButtonPressed.y = 50;
+    resetButton.x = resetButtonPressed.x = 425;
+    resetButton.y = resetButtonPressed.y = 500;
     stage.addChild(resetButton);
+
+    //textInput
+    var inputBoxHTML = document.createElement('input');
+    inputBoxHTML.type = "text";
+    inputBoxHTML.placeholder = "Enter";
+    inputBoxHTML.id = "pvBox";
+    inputBoxHTML.class = "overlayed";
+    inputBoxHTML.style.position = "absolute";
+    inputBoxHTML.style.top = 0;
+    inputBoxHTML.style.left = 0;
+    inputBoxHTML.style.width = "100px";
+    document.body.appendChild(inputBoxHTML);
+    inputBox = new createjs.DOMElement(inputBoxHTML);
+    stage.addChild(inputBox);
+    //    inputBox.visible = true;
+    inputBox.htmlElement.style.border = "10px solid red";
+
 
     initMuteUnMuteButtons();
     initListeners();
@@ -123,6 +143,15 @@ function initGraphics() {
     // start the game
     gameStarted = true;
     stage.update();
+}
+
+function updateSelectPositions() {
+    let selectY = 97; // Need to check this in firefox
+    if (isChrome) {
+        selectY = 97;
+    }
+    inputBox.x = gameCanvas.getBoundingClientRect().left + 310;
+    inputBox.y = gameCanvas.getBoundingClientRect().top + selectY
 }
 
 function handleAngleSliderChange(evt) {
@@ -159,7 +188,7 @@ function initMuteUnMuteButtons() {
  */
 function initListeners() {
 
-     fireButton.on("mouseover", function () {
+    fireButton.on("mouseover", function () {
         stage.addChild(fireButtonPressed);
         stage.removeChild(fireButton);
         playSound("click");
@@ -172,24 +201,26 @@ function initListeners() {
     fireButtonPressed.on("click", fire);
 
 
- resetButton.on("mouseover", function () {
+    resetButton.on("mouseover", function () {
         stage.addChild(resetButtonPressed);
         stage.removeChild(resetButton);
         playSound("click");
-   
-    resetButtonPressed.on("mouseout", function () {
-        stage.addChild(resetButton);
-        stage.removeChild(resetButtonPressed);
-    });
-    //once pressed, the fire function will be called 
-    resetButtonPressed.on("click", reset);
 
- });
+        resetButtonPressed.on("mouseout", function () {
+            stage.addChild(resetButton);
+            stage.removeChild(resetButtonPressed);
+        });
+        //once pressed, the fire function will be called 
+        resetButtonPressed.on("click", reset);
+
+    });
 }
-function fire(){
+
+function fire() {
     console.log("fire was tapped")
 }
-function reset(){
+
+function reset() {
     console.log("reset was tapped")
 }
 
@@ -202,8 +233,8 @@ var muteButton, unmuteButton;
 var background;
 var whiteArrow;
 var base;
-var  fireButton, fireButtonPressed;
-var  resetButton, resetButtonPressed;
+var fireButton, fireButtonPressed;
+var resetButton, resetButtonPressed;
 /*
  * Add files to be loaded here.
  */
@@ -274,7 +305,7 @@ function handleFileLoad(event) {
         fireButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "fireButtonPressed") {
         fireButtonPressed = new createjs.Bitmap(event.result);
-    }else if (event.item.id == "resetButton") {
+    } else if (event.item.id == "resetButton") {
         resetButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "resetButtonPressed") {
         resetButtonPressed = new createjs.Bitmap(event.result);
