@@ -172,10 +172,18 @@ function initGraphics() {
     stage.update();
 }
 
+//validates the user input to ensure the angle is between 0 and 180. If so there angle is set the user input
 function updateAngle(){
+    var checkAngle = inputBoxHTML.value;
+if (checkAngle >= 0 && checkAngle <= 180)
     angle = inputBoxHTML.value;
+else if (checkAngle > 180)
+    angle = 180;
+else if (checkAngle < 0)
+    angle = 0;
+else 
+    console.log("Need a valid angle (between 0 and 180)");
 }
-
 function updateSelectPositions() {
     let selectY = 97; // Need to check this in firefox
     if (isChrome) {
@@ -184,7 +192,6 @@ function updateSelectPositions() {
     inputBox.x = gameCanvas.getBoundingClientRect().left + 95;
     inputBox.y = gameCanvas.getBoundingClientRect().top + selectY
 }
-
 //function handleAngleSliderChange(evt) {
 //    //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
 //    angle = Math.round(evt.target.value);
