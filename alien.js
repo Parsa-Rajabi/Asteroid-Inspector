@@ -20,7 +20,8 @@ var inputBoxHTML;
 var shotsFired = false;
 var oldX, oldY;
 var newX, newY;
-var speed = 1;
+var speed = 2;
+var levelText;
 
 
 // Chrome 1+
@@ -68,11 +69,16 @@ function update(event) {
             rocket.x += deltaX;
             rocket.y -= deltaY;
             
+            if (rocket.x >= 765)
+                rocket.visible = false;
+            else if (rocket.y <= 0)
+                rocket.visible = false;
+            
 //            rocket.x += 1;
 //            rocket.y -= 1;
 //            console.log(angle);
-            console.log("rocket.x delta: " + deltaX);
-            console.log("rocket.y delta: " + deltaY);
+            console.log("rocket.x : " + rocket.x);
+            console.log("rocket.y : " + rocket.y);
     
         }
     }
