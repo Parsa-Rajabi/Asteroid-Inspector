@@ -195,6 +195,14 @@ function initGraphics() {
 //      // Updates the text field to the new internal data (ie. placeholder)
 //      textField.update();
 
+
+//    Level lable
+    //new text(text, font, color)
+    levelText = new createjs.Text(level, "25px Big John", "white");
+    levelText.x = 153;
+    levelText.y = 80;
+    stage.addChild(levelText);
+
     initMuteUnMuteButtons();
     initListeners();
 
