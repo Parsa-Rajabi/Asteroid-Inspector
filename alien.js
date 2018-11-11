@@ -22,6 +22,7 @@ var oldX, oldY;
 var newX, newY;
 var speed = 2;
 var levelText;
+var level = 1;
 
 
 // Chrome 1+
@@ -58,6 +59,15 @@ function update(event) {
 //        angleText.x = 403;
 //        angleText.y = 542;
 //        stage.addChild(angleText);
+
+ //Level lable
+    //new text(text, font, color)
+    stage.removeChild(levelText);
+    levelText = new createjs.Text(level, "25px Big John", "white");
+    levelText.x = 167 - levelText.getMeasuredWidth();
+    levelText.y = 80;
+    stage.addChild(levelText);
+
         
         container.rotation = -angle;
         rocket.rotation = -angle;
@@ -77,9 +87,12 @@ function update(event) {
 //            rocket.x += 1;
 //            rocket.y -= 1;
 //            console.log(angle);
-            console.log("rocket.x : " + rocket.x);
-            console.log("rocket.y : " + rocket.y);
+            // console.log("rocket.x : " + rocket.x);
+            // console.log("rocket.y : " + rocket.y);
     
+
+   
+
         }
     }
 
@@ -196,12 +209,7 @@ function initGraphics() {
 //      textField.update();
 
 
-//    Level lable
-    //new text(text, font, color)
-    levelText = new createjs.Text(level, "25px Big John", "white");
-    levelText.x = 153;
-    levelText.y = 80;
-    stage.addChild(levelText);
+    
 
     initMuteUnMuteButtons();
     initListeners();
@@ -302,6 +310,7 @@ function fire() {
 
 function reset() {
     console.log("reset was tapped");
+    level++;
 }
 
 
