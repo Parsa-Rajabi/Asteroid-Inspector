@@ -47,16 +47,12 @@ function init() {
 function update(event) {
     if (gameStarted) {
 
-        //new text(text, font, color)
-        stage.removeChild(angleText);
-        angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
-        angleText.x = 403;
-        angleText.y = 542;
-        stage.addChild(angleText);
-//        inputBoxHTML.text = angle;
-//        console.log("value " + inputBox.value);
-//        console.log("text " + inputBox.text);
-//        console.log("angle " + sangle);
+//        //new text(text, font, color)
+//        stage.removeChild(angleText);
+//        angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
+//        angleText.x = 403;
+//        angleText.y = 542;
+//        stage.addChild(angleText);
         
         container.rotation = -angle;
 
@@ -102,6 +98,9 @@ function initGraphics() {
 
     stage.addChild(angleBase);
 
+    
+//    SLIDER STUFF 
+    
 //    // angle slider
 //    // new Slider(min, max, width, height)
 //    angleSlider = new Slider(0, 180, 450, 30).set({
@@ -128,7 +127,7 @@ function initGraphics() {
     //textInput
     inputBoxHTML = document.createElement('input');
     inputBoxHTML.type = "text";
-    inputBoxHTML.placeholder = "Enter";
+    inputBoxHTML.placeholder = " # ";
     inputBoxHTML.placeholder.color = "white";
     inputBoxHTML.id = "inputBox";
     inputBoxHTML.class = "overlayed";
@@ -137,7 +136,7 @@ function initGraphics() {
     inputBoxHTML.style.top = 0;
     inputBoxHTML.style.left = 0;
     //width and height
-    inputBoxHTML.style.width = "60px";
+    inputBoxHTML.style.width = "35px";
     inputBoxHTML.style.height = "35px";
     //text background colour
     inputBoxHTML.style.background = "transparent";
@@ -189,7 +188,7 @@ function updateSelectPositions() {
     if (isChrome) {
         selectY = 538;
     }
-    inputBox.x = gameCanvas.getBoundingClientRect().left + 95;
+    inputBox.x = gameCanvas.getBoundingClientRect().left + 120;
     inputBox.y = gameCanvas.getBoundingClientRect().top + selectY
 }
 //function handleAngleSliderChange(evt) {
@@ -275,6 +274,7 @@ var whiteArrow;
 var base;
 var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
+var rocket;
 /*
  * Add files to be loaded here.
  */
@@ -283,12 +283,10 @@ function setupManifest() {
         {
             src: "images/mute.png",
             id: "mute"
-    },
-        {
+    },{
             src: "images/unmute.png",
             id: "unmute"
-    },
-        {
+    },{
             src: "images/background.png",
             id: "background"
     }, {
@@ -309,6 +307,9 @@ function setupManifest() {
     }, {
             src: "images/resetButtonPressed.png",
             id: "resetButtonPressed"
+    }, {
+            src: "images/rocket.png",
+            id: "rocket"
     }
 
  	];
@@ -349,7 +350,8 @@ function handleFileLoad(event) {
         resetButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "resetButtonPressed") {
         resetButtonPressed = new createjs.Bitmap(event.result);
-    }
+    } else if (event.item.id == "rocket") {
+        rocket = new createjs.Bitmap(event.result);
 }
 
 function loadError(evt) {
