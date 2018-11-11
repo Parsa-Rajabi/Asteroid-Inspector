@@ -17,6 +17,10 @@ var angle = 0;
 var container;
 var inputBox;
 var inputBoxHTML;
+var shotsFired = false;
+var oldX, oldY;
+var newX, newY;
+var speed = 1;
 
 
 // Chrome 1+
@@ -55,13 +59,30 @@ function update(event) {
 //        stage.addChild(angleText);
         
         container.rotation = -angle;
-
+        rocket.rotation = -angle;
         updateSelectPositions();
+        
+        if (shotsFired){
+            const deltaX = Math.cos(convertToRad(angle)) * speed;
+            const deltaY = Math.sin(convertToRad(angle)) * speed;
+            rocket.x += deltaX;
+            rocket.y -= deltaY;
+            
+//            rocket.x += 1;
+//            rocket.y -= 1;
+//            console.log(angle);
+            console.log("rocket.x delta: " + deltaX);
+            console.log("rocket.y delta: " + deltaY);
+    
+        }
     }
 
     stage.update(event);
 }
 
+function convertToRad(degAngle){
+    return (degAngle * (Math.PI/180));
+}
 /*
  * Ends the game.
  */
@@ -82,22 +103,27 @@ function initGraphics() {
     container.x = 410;
     container.y = 473;
 
-    //    whiteArrow.x = 200;
-    //    whiteArrow.y = 400;
-
-    //    container.addChild(angleBase);
-    //    stage.addChild(whiteArrow);
     container.addChild(whiteArrow);
+//    container.addChild(rocket);
     stage.addChild(container);
-
-    angleBase.x = 15;
-    angleBase.y = 30;
 
     container.regX = -3;
     container.regY = 7;
-
+    
+    angleBase.x = 15;
+    angleBase.y = 30;
     stage.addChild(angleBase);
+    
+    
+    
+    rocket.x = 412;
+    rocket.y = 475;
+    
+    rocket.regX = -10;
+    rocket.regY = 20;
+    stage.addChild(rocket);
 
+    
     
 //    SLIDER STUFF 
     
@@ -184,7 +210,7 @@ else
     console.log("Need a valid angle (between 0 and 180)");
 }
 function updateSelectPositions() {
-    let selectY = 97; // Need to check this in firefox
+    let selectY = 538; // Need to check this in firefox
     if (isChrome) {
         selectY = 538;
     }
@@ -255,7 +281,8 @@ function initListeners() {
 
 function fire() {
     console.log("fire was tapped");
-    console.log("was there an update? " + angle);
+    shotsFired = true;
+    
     
 }
 
@@ -308,7 +335,7 @@ function setupManifest() {
             src: "images/resetButtonPressed.png",
             id: "resetButtonPressed"
     }, {
-            src: "images/rocket.png",
+            src: "images/iRocket.png",
             id: "rocket"
     }
 
@@ -352,6 +379,7 @@ function handleFileLoad(event) {
         resetButtonPressed = new createjs.Bitmap(event.result);
     } else if (event.item.id == "rocket") {
         rocket = new createjs.Bitmap(event.result);
+}
 }
 
 function loadError(evt) {
