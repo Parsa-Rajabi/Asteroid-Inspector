@@ -20,7 +20,7 @@ var inputBoxHTML;
 var shotsFired = false;
 var oldX, oldY;
 var newX, newY;
-var speed = 2;
+var speed = 4;
 var levelText;
 var level = 1;
 
@@ -79,10 +79,21 @@ function update(event) {
             rocket.x += deltaX;
             rocket.y -= deltaY;
             
-            if (rocket.x >= 765)
-                rocket.visible = false;
-            else if (rocket.y <= 0)
-                rocket.visible = false;
+            //if the rocket goes out of bounds to the left or right of screen
+            if (rocket.x >= 765 | rocket.x <= 0){
+                //make sure it's not visible to user
+                // rocket.visible = false;
+                //reset it's position to origin at base - ready to be shot again
+                resetRocketPosition();
+            }   
+
+            //if the rocket goes out of bounds upwards 
+           else if (rocket.y <= 0){
+                //make sure it's not visible to user
+                // rocket.visible = false;
+                //reset it's position to origin at base - ready to be shot again
+                resetRocketPosition();
+           }
             
 //            rocket.x += 1;
 //            rocket.y -= 1;
@@ -109,6 +120,13 @@ function endGame() {
     gameStarted = false;
 }
 
+//sets the position of rocket to origin and sets shorts fired to false - ready to be launched again
+function resetRocketPosition(){
+    rocket.x = 412;
+    rocket.y = 475;
+    // speed = 0;
+    shotsFired = false;
+}
 
 
 /*
@@ -141,6 +159,7 @@ function initGraphics() {
     rocket.regX = -10;
     rocket.regY = 20;
     stage.addChild(rocket);
+    rocket.visible = false;
 
     
     
@@ -172,7 +191,7 @@ function initGraphics() {
     //textInput
     inputBoxHTML = document.createElement('input');
     inputBoxHTML.type = "text";
-    inputBoxHTML.placeholder = " # ";
+    inputBoxHTML.placeholder = "0";
     inputBoxHTML.placeholder.color = "white";
     inputBoxHTML.id = "inputBox";
     inputBoxHTML.class = "overlayed";
@@ -201,6 +220,20 @@ function initGraphics() {
 
     
     
+
+    $(document).ready(function(){
+   $('input').bind("enterKey",function(e){
+     // alert("angle is now: " + angle);
+     fire();
+   });
+   $('input').keyup(function(e){
+     if(e.keyCode == 13)
+     {
+        $(this).trigger("enterKey");
+     }
+
+   });
+});
 //    var UserInput = new TextInput();
 //      UserInput.y = UserInput.x = 400;
 //      UserInput.placeHolder = "Input Field";
@@ -304,6 +337,7 @@ function initListeners() {
 function fire() {
     console.log("fire was tapped");
     shotsFired = true;
+    rocket.visible = true;
     
     
 }
@@ -311,6 +345,7 @@ function fire() {
 function reset() {
     console.log("reset was tapped");
     level++;
+
 }
 
 
