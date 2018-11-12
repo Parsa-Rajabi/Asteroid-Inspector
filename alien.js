@@ -53,56 +53,56 @@ function init() {
 function update(event) {
     if (gameStarted) {
 
-//        //new text(text, font, color)
-//        stage.removeChild(angleText);
-//        angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
-//        angleText.x = 403;
-//        angleText.y = 542;
-//        stage.addChild(angleText);
+        //        //new text(text, font, color)
+        //        stage.removeChild(angleText);
+        //        angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
+        //        angleText.x = 403;
+        //        angleText.y = 542;
+        //        stage.addChild(angleText);
 
- //Level lable
-    //new text(text, font, color)
-    stage.removeChild(levelText);
-    levelText = new createjs.Text(level, "25px Big John", "white");
-    levelText.x = 167 - levelText.getMeasuredWidth();
-    levelText.y = 80;
-    stage.addChild(levelText);
+        //Level lable
+        //new text(text, font, color)
+        stage.removeChild(levelText);
+        levelText = new createjs.Text(level, "25px Big John", "white");
+        levelText.x = 167 - levelText.getMeasuredWidth();
+        levelText.y = 80;
+        stage.addChild(levelText);
 
-        
+
         container.rotation = -angle;
         rocket.rotation = -angle;
         updateSelectPositions();
-        
-        if (shotsFired){
+
+        if (shotsFired) {
             const deltaX = Math.cos(convertToRad(angle)) * speed;
             const deltaY = Math.sin(convertToRad(angle)) * speed;
             rocket.x += deltaX;
             rocket.y -= deltaY;
-            
+
             //if the rocket goes out of bounds to the left or right of screen
-            if (rocket.x >= 765 | rocket.x <= 0){
+            if (rocket.x >= 765 | rocket.x <= 0) {
                 //make sure it's not visible to user
                 // rocket.visible = false;
                 //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
-            }   
+            }
 
             //if the rocket goes out of bounds upwards 
-           else if (rocket.y <= 0){
+            else if (rocket.y <= 0) {
                 //make sure it's not visible to user
                 // rocket.visible = false;
                 //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
-           }
-            
-//            rocket.x += 1;
-//            rocket.y -= 1;
-//            console.log(angle);
+            }
+
+            //            rocket.x += 1;
+            //            rocket.y -= 1;
+            //            console.log(angle);
             // console.log("rocket.x : " + rocket.x);
             // console.log("rocket.y : " + rocket.y);
-    
 
-   
+
+
 
         }
     }
@@ -110,8 +110,8 @@ function update(event) {
     stage.update(event);
 }
 
-function convertToRad(degAngle){
-    return (degAngle * (Math.PI/180));
+function convertToRad(degAngle) {
+    return (degAngle * (Math.PI / 180));
 }
 /*
  * Ends the game.
@@ -121,7 +121,7 @@ function endGame() {
 }
 
 //sets the position of rocket to origin and sets shorts fired to false - ready to be launched again
-function resetRocketPosition(){
+function resetRocketPosition() {
     rocket.x = 412;
     rocket.y = 475;
     // speed = 0;
@@ -141,41 +141,41 @@ function initGraphics() {
     container.y = 473;
 
     container.addChild(whiteArrow);
-//    container.addChild(rocket);
+    //    container.addChild(rocket);
     stage.addChild(container);
 
     container.regX = -3;
     container.regY = 7;
-    
+
     angleBase.x = 15;
     angleBase.y = 30;
     stage.addChild(angleBase);
-    
-    
-    
+
+
+
     rocket.x = 412;
     rocket.y = 475;
-    
+
     rocket.regX = -10;
     rocket.regY = 20;
     stage.addChild(rocket);
     rocket.visible = false;
 
-    
-    
-//    SLIDER STUFF 
-    
-//    // angle slider
-//    // new Slider(min, max, width, height)
-//    angleSlider = new Slider(0, 180, 450, 30).set({
-//        x: 180,
-//        y: 450,
-//        value: 0 //default value
-//    });
-//
-//
-//    angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
-//    stage.addChild(angleSlider);
+
+
+    //    SLIDER STUFF 
+
+    //    // angle slider
+    //    // new Slider(min, max, width, height)
+    //    angleSlider = new Slider(0, 180, 450, 30).set({
+    //        x: 180,
+    //        y: 450,
+    //        value: 0 //default value
+    //    });
+    //
+    //
+    //    angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
+    //    stage.addChild(angleSlider);
 
 
     //positioning of the fire button
@@ -210,39 +210,38 @@ function initGraphics() {
     inputBoxHTML.maxLength = "3";
 
     inputBoxHTML.onkeyup = updateAngle;
-    
+
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
     stage.addChild(inputBox);
     //    inputBox.visible = true;
-//    inputBox.htmlElement.style.border = "2px solid red";
+    //    inputBox.htmlElement.style.border = "2px solid red";
     inputBox.htmlElement.style.border = "none";
 
-    
-    
-
-    $(document).ready(function(){
-   $('input').bind("enterKey",function(e){
-     // alert("angle is now: " + angle);
-     fire();
-   });
-   $('input').keyup(function(e){
-     if(e.keyCode == 13)
-     {
-        $(this).trigger("enterKey");
-     }
-
-   });
-});
-//    var UserInput = new TextInput();
-//      UserInput.y = UserInput.x = 400;
-//      UserInput.placeHolder = "Input Field";
-//      stage.addChild(UserInput);
-//      // Updates the text field to the new internal data (ie. placeholder)
-//      textField.update();
 
 
-    
+
+    $(document).ready(function() {
+        $('input').bind("enterKey", function(e) {
+            // alert("angle is now: " + angle);
+            fire();
+        });
+        $('input').keyup(function(e) {
+            if (e.keyCode == 13) {
+                $(this).trigger("enterKey");
+            }
+
+        });
+    });
+    //    var UserInput = new TextInput();
+    //      UserInput.y = UserInput.x = 400;
+    //      UserInput.placeHolder = "Input Field";
+    //      stage.addChild(UserInput);
+    //      // Updates the text field to the new internal data (ie. placeholder)
+    //      textField.update();
+
+
+
 
     initMuteUnMuteButtons();
     initListeners();
@@ -253,17 +252,18 @@ function initGraphics() {
 }
 
 //validates the user input to ensure the angle is between 0 and 180. If so there angle is set the user input
-function updateAngle(){
+function updateAngle() {
     var checkAngle = inputBoxHTML.value;
-if (checkAngle >= 0 && checkAngle <= 180)
-    angle = inputBoxHTML.value;
-else if (checkAngle > 180)
-    angle = 180;
-else if (checkAngle < 0)
-    angle = 0;
-else 
-    console.log("Need a valid angle (between 0 and 180)");
+    if (checkAngle >= 0 && checkAngle <= 180)
+        angle = inputBoxHTML.value;
+    else if (checkAngle > 180)
+        angle = 180;
+    else if (checkAngle < 0)
+        angle = 0;
+    else
+        console.log("Need a valid angle (between 0 and 180)");
 }
+
 function updateSelectPositions() {
     let selectY = 538; // Need to check this in firefox
     if (isChrome) {
@@ -306,12 +306,13 @@ function initMuteUnMuteButtons() {
  */
 function initListeners() {
 
-    fireButton.on("mouseover", function () {
+    //fire button attributes
+    fireButton.on("mouseover", function() {
         stage.addChild(fireButtonPressed);
         stage.removeChild(fireButton);
         playSound("click");
     });
-    fireButtonPressed.on("mouseout", function () {
+    fireButtonPressed.on("mouseout", function() {
         stage.addChild(fireButton);
         stage.removeChild(fireButtonPressed);
     });
@@ -319,12 +320,13 @@ function initListeners() {
     fireButtonPressed.on("click", fire);
 
 
-    resetButton.on("mouseover", function () {
+    //reset button attributes
+    resetButton.on("mouseover", function() {
         stage.addChild(resetButtonPressed);
         stage.removeChild(resetButton);
         playSound("click");
 
-        resetButtonPressed.on("mouseout", function () {
+        resetButtonPressed.on("mouseout", function() {
             stage.addChild(resetButton);
             stage.removeChild(resetButtonPressed);
         });
@@ -338,8 +340,7 @@ function fire() {
     console.log("fire was tapped");
     shotsFired = true;
     rocket.visible = true;
-    
-    
+
 }
 
 function reset() {
@@ -360,44 +361,50 @@ var base;
 var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
 var rocket;
+var miss, missHover;
 /*
  * Add files to be loaded here.
  */
 function setupManifest() {
-    manifest = [
-        {
+    manifest = [{
             src: "images/mute.png",
             id: "mute"
-    },{
+        }, {
             src: "images/unmute.png",
             id: "unmute"
-    },{
+        }, {
             src: "images/background.png",
             id: "background"
-    }, {
+        }, {
             src: "images/whiteArrow.png",
             id: "whiteArrow"
-    }, {
+        }, {
             src: "images/base.png",
             id: "angleBase"
-    }, {
+        }, {
             src: "images/fireButton.png",
             id: "fireButton"
-    }, {
+        }, {
             src: "images/fireButtonPressed.png",
             id: "fireButtonPressed"
-    }, {
+        }, {
             src: "images/resetButton.png",
             id: "resetButton"
-    }, {
+        }, {
             src: "images/resetButtonPressed.png",
             id: "resetButtonPressed"
-    }, {
+        }, {
             src: "images/iRocket.png",
             id: "rocket"
-    }
+        }, {
+            src: "images/miss.png",
+            id: "miss"
+        }, {
+            src: "images/missHover.png",
+            id: "missHover"
+        }
 
- 	];
+    ];
 }
 
 
@@ -437,7 +444,11 @@ function handleFileLoad(event) {
         resetButtonPressed = new createjs.Bitmap(event.result);
     } else if (event.item.id == "rocket") {
         rocket = new createjs.Bitmap(event.result);
-}
+    } else if (event.item.id == "miss") {
+        miss = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "missHover") {
+        missHover = new createjs.Bitmap(event.result);
+    }
 }
 
 function loadError(evt) {
