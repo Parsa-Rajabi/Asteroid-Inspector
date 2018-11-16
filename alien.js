@@ -23,6 +23,7 @@ var newX, newY;
 var speed = 4;
 var levelText;
 var level = 1;
+var asteroidPosition = -150;
 
 
 // Chrome 1+
@@ -67,7 +68,7 @@ function update(event) {
         levelText.x = 167 - levelText.getMeasuredWidth();
         levelText.y = 80;
         stage.addChild(levelText);
-
+        
 
         container.rotation = -angle;
         rocket.rotation = -angle;
@@ -80,31 +81,24 @@ function update(event) {
             rocket.y -= deltaY;
 
             //if the rocket goes out of bounds to the left or right of screen
+            //reset it's position to origin at base - ready to be shot again
+
             if (rocket.x >= 765 | rocket.x <= 0) {
-                //make sure it's not visible to user
                 // rocket.visible = false;
                 level++;
-                //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
-            }
-
             //if the rocket goes out of bounds upwards 
-            else if (rocket.y <= 0) {
-                //make sure it's not visible to user
+            }else if (rocket.y <= 0) {
                 // rocket.visible = false;
                 level++;
-                //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
             }
+        }
 
-            //            rocket.x += 1;
-            //            rocket.y -= 1;
-            //            console.log(angle);
-            // console.log("rocket.x : " + rocket.x);
-            // console.log("rocket.y : " + rocket.y);
-
-
-
+        // asteroidPosition++;
+        asteroid.y = asteroidPosition;
+        // console.log(asteroid.y);
+        if (asteroid.y <= 0){
 
         }
     }
@@ -164,8 +158,9 @@ function initGraphics() {
     // rocket.visible = false;
 
 
-    asteroid.x = 
-    asteroid.y = 
+    asteroid.x = getRandomNumber(500);
+    asteroid.y = -150;
+    stage.addChild(asteroid);
 
 
     //    SLIDER STUFF 
@@ -415,7 +410,7 @@ function setupManifest() {
         }, {
             src: "images/missHover.png",
             id: "missHover"
-        }{
+        },{
             src: "images/asteroid.png",
             id: "asteroid"
         }
