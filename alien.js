@@ -82,7 +82,7 @@ function update(event) {
             //if the rocket goes out of bounds to the left or right of screen
             if (rocket.x >= 765 | rocket.x <= 0) {
                 //make sure it's not visible to user
-                rocket.visible = false;
+                // rocket.visible = false;
                 level++;
                 //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
@@ -91,7 +91,7 @@ function update(event) {
             //if the rocket goes out of bounds upwards 
             else if (rocket.y <= 0) {
                 //make sure it's not visible to user
-                rocket.visible = false;
+                // rocket.visible = false;
                 level++;
                 //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
@@ -159,10 +159,13 @@ function initGraphics() {
     rocket.y = 475;
 
     rocket.regX = -10;
-    rocket.regY = 20;
+    rocket.regY = 25.5;
     stage.addChild(rocket);
-    rocket.visible = false;
+    // rocket.visible = false;
 
+
+    asteroid.x = 
+    asteroid.y = 
 
 
     //    SLIDER STUFF 
@@ -188,7 +191,7 @@ function initGraphics() {
     //positioning of the fire button
     resetButton.x = resetButtonPressed.x = 425;
     resetButton.y = resetButtonPressed.y = 500;
-    // stage.addChild(resetButton);
+    stage.addChild(resetButton);
 
     //textInput
     inputBoxHTML = document.createElement('input');
@@ -211,8 +214,8 @@ function initGraphics() {
     inputBoxHTML.style.color = "white";
     inputBoxHTML.maxLength = "3";
 
-    // inputBoxHTML.onkeyup = updateAngle;
-    inputBoxHTML.onchange= updateAngle;
+    inputBoxHTML.onkeyup = updateAngle;
+    // inputBoxHTML.onchange= updateAngle;
 
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
@@ -252,6 +255,11 @@ function initGraphics() {
     // start the game
     gameStarted = true;
     stage.update();
+}
+
+//generate a random number
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
 
 //validates the user input to ensure the angle is between 0 and 180. If so there angle is set the user input
@@ -349,7 +357,7 @@ function fire() {
 
 function reset() {
     console.log("reset was tapped");
-    level++;
+    level--;
 
 }
 
@@ -366,6 +374,7 @@ var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
 var rocket;
 var miss, missHover;
+var asteroid;
 /*
  * Add files to be loaded here.
  */
@@ -398,7 +407,7 @@ function setupManifest() {
             src: "images/resetButtonPressed.png",
             id: "resetButtonPressed"
         }, {
-            src: "images/iRocket.png",
+            src: "images/iRocketNew.png",
             id: "rocket"
         }, {
             src: "images/miss.png",
@@ -406,6 +415,9 @@ function setupManifest() {
         }, {
             src: "images/missHover.png",
             id: "missHover"
+        }{
+            src: "images/asteroid.png",
+            id: "asteroid"
         }
 
     ];
@@ -452,6 +464,8 @@ function handleFileLoad(event) {
         miss = new createjs.Bitmap(event.result);
     } else if (event.item.id == "missHover") {
         missHover = new createjs.Bitmap(event.result);
+    }else if (event.item.id == "asteroid") {
+        asteroid = new createjs.Bitmap(event.result);
     }
 }
 
