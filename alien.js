@@ -82,7 +82,8 @@ function update(event) {
             //if the rocket goes out of bounds to the left or right of screen
             if (rocket.x >= 765 | rocket.x <= 0) {
                 //make sure it's not visible to user
-                // rocket.visible = false;
+                rocket.visible = false;
+                level++;
                 //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
             }
@@ -90,7 +91,8 @@ function update(event) {
             //if the rocket goes out of bounds upwards 
             else if (rocket.y <= 0) {
                 //make sure it's not visible to user
-                // rocket.visible = false;
+                rocket.visible = false;
+                level++;
                 //reset it's position to origin at base - ready to be shot again
                 resetRocketPosition();
             }
@@ -186,7 +188,7 @@ function initGraphics() {
     //positioning of the fire button
     resetButton.x = resetButtonPressed.x = 425;
     resetButton.y = resetButtonPressed.y = 500;
-    stage.addChild(resetButton);
+    // stage.addChild(resetButton);
 
     //textInput
     inputBoxHTML = document.createElement('input');
@@ -209,7 +211,8 @@ function initGraphics() {
     inputBoxHTML.style.color = "white";
     inputBoxHTML.maxLength = "3";
 
-    inputBoxHTML.onkeyup = updateAngle;
+    // inputBoxHTML.onkeyup = updateAngle;
+    inputBoxHTML.onchange= updateAngle;
 
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
@@ -340,6 +343,7 @@ function fire() {
     console.log("fire was tapped");
     shotsFired = true;
     rocket.visible = true;
+    updateAngle();
 
 }
 
