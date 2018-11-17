@@ -12,20 +12,33 @@ var FPS = 20;
 var STAGE_WIDTH, STAGE_HEIGHT;
 var gameStarted = false;
 var angleSlider;
-var angleText;
+var scoreText;
 var angle = 0;
 var container;
 var inputBox;
 var inputBoxHTML;
 var shotsFired = false;
-var oldX, oldY;
-var newX, newY;
-var speed = 4;
+var rocketSpeed = 4;
 var levelText;
 var level = 1;
-var asteroidPosition = -150;
+var asteroidPosition = -70;
+var asteroidSpeed = 1;
+var score = 0;
+
+var checkX = [];
+var checkY = [];
+
+var rocketPositionX;
+var rocketPositionY;
+
+var asteroidPositionX;
+var asteroidPositionY;
+
+var asteroidContainer;
 
 
+
+var myDebug = false;
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
 
@@ -50,16 +63,40 @@ function init() {
  * Main update loop.
  */
 
-
 function update(event) {
     if (gameStarted) {
 
+        // if(isCollide(asteroid,rocket)){
+            // console.log("The value of collision is true");
+        // }else 
+                    // console.log("The value of collision is false");
+
+            
+        var checkCollision = ndgmr.checkRectCollision(rocket,asteroid,0);
+        if (checkCollision){
+            asteroidSpeed = 0;
+            rocketSpeed = 0;
+
+            // console.log("There is a collision!")
+            // setTimeout(function(){  }, 250);
+                // score++;
+        }
+        // if there is a collision = check = true
+        // else if there is not a collision, check = false
+        // intersection is null if no collision, 
+        // otherwise a {x,y,width,height}-Object is returned
+
+                // console.log("ASS X" ,asteroid.x);
+                // console.log("ROCKET X ", rocket.x);
+                // console.log("ASS Y" ,asteroid.y);
+                // console.log("ROCKET Y" , rocket.y);
+
         //        //new text(text, font, color)
-        //        stage.removeChild(angleText);
-        //        angleText = new createjs.Text(angle, "23px Lato", "#ffffff");
-        //        angleText.x = 403;
-        //        angleText.y = 542;
-        //        stage.addChild(angleText);
+               stage.removeChild(scoreText);
+               scoreText = new createjs.Text(score, "23px Lato", "#ffffff");
+               scoreText.x = 403;
+               scoreText.y = 542;
+               stage.addChild(scoreText);
 
         //Level lable
         //new text(text, font, color)
@@ -75,8 +112,8 @@ function update(event) {
         updateSelectPositions();
 
         if (shotsFired) {
-            const deltaX = Math.cos(convertToRad(angle)) * speed;
-            const deltaY = Math.sin(convertToRad(angle)) * speed;
+            const deltaX = Math.cos(convertToRad(angle)) * rocketSpeed;
+            const deltaY = Math.sin(convertToRad(angle)) * rocketSpeed;
             rocket.x += deltaX;
             rocket.y -= deltaY;
 
@@ -93,15 +130,76 @@ function update(event) {
                 level++;
                 resetRocketPosition();
             }
+
+
+
+        rocketPositionX = Math.floor(rocket.x);
+        rocketPositionY = Math.floor(rocket.y);
+
+        asteroidPositionX = Math.floor(asteroid.x);
+        asteroidPositionY = Math.floor(asteroid.y);
+
+        var diff = 10;
+           
+        var XhitBoxMinus = asteroidPositionX - diff;
+        var XhitBoxPlus = asteroidPositionX + diff;
+
+        var YhitBoxMinus = asteroidPositionY - diff;
+        var YhitBoxPlus = asteroidPositionY + diff;
+
+        for (var i =  XhitBoxMinus; i <= XhitBoxPlus; i++) {
+            checkX.push(i);
+        }
+        
+         for (var i =  YhitBoxMinus; i <= YhitBoxPlus; i++) {
+            checkY.push(i);
         }
 
-        // asteroidPosition++;
+        
+        if(checkX.includes(rocketPositionX)){
+                console.log("---------The X for both are the same ");
+        }
+
+        if(checkY.includes(rocketPositionY)){
+                console.log("---------The Y for both are the same ");
+        }
+
+        if(checkX.includes(rocketPositionX) && checkY.includes(rocketPositionY)){
+            console.log("This one somehow works?/? ")
+        }
+
+        if(checkX.includes(rocketPositionX)){
+                console.log("The X for both are the same ");
+            if(checkY.includes(rocketPositionY)){
+                console.log("The Y for both are the same ");
+                rocketSpeed = 0;
+                asteroidSpeed = 0;
+                score++;
+                console.log("WE GOT A HIT BOIS!" );
+                console.log("ASS X" ,asteroid.x);
+                console.log("ROCKET X ", rocket.x);
+                console.log("ASS Y" ,asteroid.y);
+                console.log("ROCKET Y" , rocket.y);
+
+            }
+        }
+
+        }
+
+        asteroidPosition += asteroidSpeed;
         asteroid.y = asteroidPosition;
         // console.log(asteroid.y);
-        if (asteroid.y <= 0){
+        if (asteroid.y >= 400){
+            asteroidPosition = 0;
+            // asteroidSpeed += 2;
+            level++;
+            // console.log("YAY");
 
         }
-    }
+
+
+
+    }//ends the game
 
     stage.update(event);
 }
@@ -120,7 +218,6 @@ function endGame() {
 function resetRocketPosition() {
     rocket.x = 412;
     rocket.y = 475;
-    // speed = 0;
     shotsFired = false;
 }
 
@@ -135,6 +232,10 @@ function initGraphics() {
     container = new createjs.Container();
     container.x = 410;
     container.y = 473;
+
+
+    asteroidContainer = new createjs.Container();
+    asteroidContainer.addChild(asteroid);
 
     container.addChild(whiteArrow);
     //    container.addChild(rocket);
@@ -159,7 +260,8 @@ function initGraphics() {
 
 
     asteroid.x = getRandomNumber(500);
-    asteroid.y = -150;
+    // asteroid.x = 370; 
+    asteroid.y = -70;
     stage.addChild(asteroid);
 
 
@@ -250,6 +352,12 @@ function initGraphics() {
     // start the game
     gameStarted = true;
     stage.update();
+
+
+
+
+    
+
 }
 
 //generate a random number
