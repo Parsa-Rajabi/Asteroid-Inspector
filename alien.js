@@ -71,7 +71,7 @@ function update(event) {
         // }else 
                     // console.log("The value of collision is false");
 
-            
+
         var checkCollision = ndgmr.checkRectCollision(rocket,asteroid,0);
         if (checkCollision){
             asteroidSpeed = 0;
@@ -130,74 +130,6 @@ function update(event) {
                 level++;
                 resetRocketPosition();
             }
-
-
-
-        rocketPositionX = Math.floor(rocket.x);
-        rocketPositionY = Math.floor(rocket.y);
-
-        asteroidPositionX = Math.floor(asteroid.x);
-        asteroidPositionY = Math.floor(asteroid.y);
-
-        var diff = 10;
-           
-        var XhitBoxMinus = asteroidPositionX - diff;
-        var XhitBoxPlus = asteroidPositionX + diff;
-
-        var YhitBoxMinus = asteroidPositionY - diff;
-        var YhitBoxPlus = asteroidPositionY + diff;
-
-        for (var i =  XhitBoxMinus; i <= XhitBoxPlus; i++) {
-            checkX.push(i);
-        }
-        
-         for (var i =  YhitBoxMinus; i <= YhitBoxPlus; i++) {
-            checkY.push(i);
-        }
-
-        
-        if(checkX.includes(rocketPositionX)){
-                console.log("---------The X for both are the same ");
-        }
-
-        if(checkY.includes(rocketPositionY)){
-                console.log("---------The Y for both are the same ");
-        }
-
-        if(checkX.includes(rocketPositionX) && checkY.includes(rocketPositionY)){
-            console.log("This one somehow works?/? ")
-        }
-
-        if(checkX.includes(rocketPositionX)){
-                console.log("The X for both are the same ");
-            if(checkY.includes(rocketPositionY)){
-                console.log("The Y for both are the same ");
-                rocketSpeed = 0;
-                asteroidSpeed = 0;
-                score++;
-                console.log("WE GOT A HIT BOIS!" );
-                console.log("ASS X" ,asteroid.x);
-                console.log("ROCKET X ", rocket.x);
-                console.log("ASS Y" ,asteroid.y);
-                console.log("ROCKET Y" , rocket.y);
-
-            }
-        }
-
-        }
-
-        asteroidPosition += asteroidSpeed;
-        asteroid.y = asteroidPosition;
-        // console.log(asteroid.y);
-        if (asteroid.y >= 400){
-            asteroidPosition = 0;
-            // asteroidSpeed += 2;
-            level++;
-            // console.log("YAY");
-
-        }
-
-
 
     }//ends the game
 
