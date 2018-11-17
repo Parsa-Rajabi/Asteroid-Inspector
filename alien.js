@@ -65,38 +65,26 @@ function init() {
 
 function update(event) {
     if (gameStarted) {
-
-        // if(isCollide(asteroid,rocket)){
-            // console.log("The value of collision is true");
-        // }else 
-                    // console.log("The value of collision is false");
-
-
+        // if there is a collision = check = true
+        // else if there is not a collision, check = false
+        // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
         var checkCollision = ndgmr.checkRectCollision(rocket,asteroid,0);
         if (checkCollision){
             asteroidSpeed = 0;
             rocketSpeed = 0;
-
-            // console.log("There is a collision!")
-            // setTimeout(function(){  }, 250);
-                // score++;
         }
-        // if there is a collision = check = true
-        // else if there is not a collision, check = false
-        // intersection is null if no collision, 
-        // otherwise a {x,y,width,height}-Object is returned
 
                 // console.log("ASS X" ,asteroid.x);
                 // console.log("ROCKET X ", rocket.x);
                 // console.log("ASS Y" ,asteroid.y);
                 // console.log("ROCKET Y" , rocket.y);
 
-        //        //new text(text, font, color)
-               stage.removeChild(scoreText);
-               scoreText = new createjs.Text(score, "23px Lato", "#ffffff");
-               scoreText.x = 403;
-               scoreText.y = 542;
-               stage.addChild(scoreText);
+       //new text(text, font, color)
+       stage.removeChild(scoreText);
+       scoreText = new createjs.Text(score, "23px Lato", "#ffffff");
+       scoreText.x = 403;
+       scoreText.y = 542;
+       stage.addChild(scoreText);
 
         //Level lable
         //new text(text, font, color)
@@ -105,10 +93,17 @@ function update(event) {
         levelText.x = 167 - levelText.getMeasuredWidth();
         levelText.y = 80;
         stage.addChild(levelText);
-        
 
         container.rotation = -angle;
         rocket.rotation = -angle;
+
+        // asteroidPosition += asteroidSpeed;
+        // asteroid.y = asteroidPosition;
+        // asteroid.x -= Math.asin((asteroid.x-base.x)/(asteroid.y/base.y));
+        const asteroidPositionX = 15;
+        asteroid.x +=asteroidPositionX * asteroidSpeed;
+        const asteroidPositionY = 10;
+        asteroid.y +=asteroidPositionY * asteroidSpeed;
         updateSelectPositions();
 
         if (shotsFired) {
@@ -119,7 +114,6 @@ function update(event) {
 
             //if the rocket goes out of bounds to the left or right of screen
             //reset it's position to origin at base - ready to be shot again
-
             if (rocket.x >= 765 | rocket.x <= 0) {
                 // rocket.visible = false;
                 level++;
@@ -130,6 +124,7 @@ function update(event) {
                 level++;
                 resetRocketPosition();
             }
+        }
 
     }//ends the game
 
@@ -176,9 +171,9 @@ function initGraphics() {
     container.regX = -3;
     container.regY = 7;
 
-    angleBase.x = 15;
-    angleBase.y = 30;
-    stage.addChild(angleBase);
+    base.x = 15;
+    base.y = 30;
+    stage.addChild(base);
 
 
 
@@ -428,7 +423,7 @@ function setupManifest() {
             id: "whiteArrow"
         }, {
             src: "images/base.png",
-            id: "angleBase"
+            id: "base"
         }, {
             src: "images/fireButton.png",
             id: "fireButton"
@@ -483,8 +478,8 @@ function handleFileLoad(event) {
         background = new createjs.Bitmap(event.result);
     } else if (event.item.id == "whiteArrow") {
         whiteArrow = new createjs.Bitmap(event.result);
-    } else if (event.item.id == "angleBase") {
-        angleBase = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "base") {
+        base = new createjs.Bitmap(event.result);
     } else if (event.item.id == "fireButton") {
         fireButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "fireButtonPressed") {
