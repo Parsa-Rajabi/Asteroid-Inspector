@@ -22,7 +22,7 @@ var rocketSpeed = 4;
 var levelText;
 var level = 1;
 var asteroidPosition = -70;
-var asteroidSpeed = 1;
+var asteroidSpeed = 0.4;
 var score = 0;
 
 var checkX = [];
@@ -36,7 +36,7 @@ var asteroidPositionY;
 
 var asteroidContainer;
 
-
+var astroidX;
 
 var myDebug = false;
 // Chrome 1+
@@ -100,10 +100,24 @@ function update(event) {
         // asteroidPosition += asteroidSpeed;
         // asteroid.y = asteroidPosition;
         // asteroid.x -= Math.asin((asteroid.x-base.x)/(asteroid.y/base.y));
-        const asteroidPositionX = 15;
+        const asteroidPositionX = 0;
         asteroid.x +=asteroidPositionX * asteroidSpeed;
         const asteroidPositionY = 10;
         asteroid.y +=asteroidPositionY * asteroidSpeed;
+        
+            // if ( asteroid.x >= 765 |  asteroid.x <= 0) 
+                // rocket.visible = false;
+                // level++;
+                // resetAsteroidPosition();
+            //if the rocket goes out of bounds upwards 
+            // }else if (asteroid.y <= 0) {
+                // rocket.visible = false;
+                // level++;
+                // resetRocketPosition();
+            // }
+
+
+
         updateSelectPositions();
 
         if (shotsFired) {
@@ -117,12 +131,12 @@ function update(event) {
             if (rocket.x >= 765 | rocket.x <= 0) {
                 // rocket.visible = false;
                 level++;
-                resetRocketPosition();
+                resetAsteroidPosition();
             //if the rocket goes out of bounds upwards 
             }else if (rocket.y <= 0) {
                 // rocket.visible = false;
                 level++;
-                resetRocketPosition();
+                resetAsteroidPosition();
             }
         }
 
@@ -148,6 +162,12 @@ function resetRocketPosition() {
     shotsFired = false;
 }
 
+function resetAsteroidPosition() {
+    asteroid.x = astroidX;
+    asteroid.y = -70;
+
+}
+
 
 /*
  * Place graphics and add them to the stage.
@@ -169,7 +189,7 @@ function initGraphics() {
     stage.addChild(container);
 
     container.regX = -3;
-    container.regY = 7;
+    container.regY = 17;
 
     base.x = 15;
     base.y = 30;
@@ -185,8 +205,8 @@ function initGraphics() {
     stage.addChild(rocket);
     // rocket.visible = false;
 
-
-    asteroid.x = getRandomNumber(500);
+    
+    asteroid.x = astroidX = getRandomNumber(500);
     // asteroid.x = 370; 
     asteroid.y = -70;
     stage.addChild(asteroid);
