@@ -22,7 +22,7 @@ var rocketSpeed = 4;
 var levelText;
 var level = 1;
 var asteroidPosition = -70;
-var asteroidSpeed = 0.4;
+var asteroidSpeed = 1.5;
 var score = 0;
 
 var checkX = [];
@@ -34,9 +34,11 @@ var rocketPositionY;
 var asteroidPositionX;
 var asteroidPositionY;
 
+let angleBetweenAsteroidAndBase;
+
 var asteroidContainer;
 
-var astroidX;
+var asteroidX;
 
 var myDebug = false;
 // Chrome 1+
@@ -100,10 +102,12 @@ function update(event) {
         // asteroidPosition += asteroidSpeed;
         // asteroid.y = asteroidPosition;
         // asteroid.x -= Math.asin((asteroid.x-base.x)/(asteroid.y/base.y));
-        const asteroidPositionX = 0;
-        asteroid.x +=asteroidPositionX * asteroidSpeed;
-        const asteroidPositionY = 10;
-        asteroid.y +=asteroidPositionY * asteroidSpeed;
+        console.log(angleBetweenAsteroidAndBase);
+        const asteroidDeltaX = Math.cos(angleBetweenAsteroidAndBase) * asteroidSpeed;
+        const asteroidDeltaY = Math.sin(angleBetweenAsteroidAndBase) * asteroidSpeed;
+
+        asteroid.x += asteroidDeltaX;
+        asteroid.y += asteroidDeltaY;
         
             // if ( asteroid.x >= 765 |  asteroid.x <= 0) 
                 // rocket.visible = false;
@@ -163,7 +167,7 @@ function resetRocketPosition() {
 }
 
 function resetAsteroidPosition() {
-    asteroid.x = astroidX;
+    asteroid.x = asteroidX;
     asteroid.y = -70;
 
 }
@@ -206,9 +210,14 @@ function initGraphics() {
     // rocket.visible = false;
 
     
-    asteroid.x = astroidX = getRandomNumber(500);
+    asteroid.x = asteroidX = getRandomNumber(500);
     // asteroid.x = 370; 
     asteroid.y = -70;
+    angleBetweenAsteroidAndBase = -Math.atan(0 - 400/asteroid.x - 400);
+    console.log("Asteroid X: " + asteroid.x);
+    console.log("Base X: " + base.x);
+    console.log("Asteroid Y: " + asteroid.y);
+    console.log("Base Y: " + base.y);
     stage.addChild(asteroid);
 
 
