@@ -76,10 +76,11 @@ function update(event) {
         // if there is a collision = check = true
         // else if there is not a collision, check = false
         // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
-        var checkCollision = ndgmr.checkRectCollision(rocket, asteroid, 0);
+        var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 0);
         if (checkCollision) {
             asteroidSpeed = 0;
             rocketSpeed = 0;
+            stage.removeChild(asteroid);
         }
 
         // console.log("ASS X" ,asteroid.x);
@@ -108,12 +109,12 @@ function update(event) {
         // asteroidPosition += asteroidSpeed;
         // asteroid.y = asteroidPosition;
         // asteroid.x -= Math.asin((asteroid.x-base.x)/(asteroid.y/base.y));
-        console.log(angleBetweenAsteroidAndBase);
-        const asteroidDeltaX = Math.cos(angleBetweenAsteroidAndBase) * asteroidSpeed;
-        const asteroidDeltaY = Math.sin(angleBetweenAsteroidAndBase) * asteroidSpeed;
-
-        asteroid.x += asteroidDeltaX;
-        asteroid.y += asteroidDeltaY;
+        // console.log(angleBetweenAsteroidAndBase);
+        // const asteroidDeltaX = Math.cos(angleBetweenAsteroidAndBase) * asteroidSpeed;
+        // const asteroidDeltaY = Math.sin(angleBetweenAsteroidAndBase) * asteroidSpeed;
+        //
+        // asteroid.x += asteroidDeltaX;
+        // asteroid.y += asteroidDeltaY;
 
         // if ( asteroid.x >= 765 |  asteroid.x <= 0)
         // rocket.visible = false;
@@ -216,7 +217,7 @@ function initGraphics() {
 
 
     asteroid.x = asteroidX = getRandomNumber(500);
-    // asteroid.x = 370; 
+    // asteroid.x = 370;
     asteroid.y = -70;
     angleBetweenAsteroidAndBase = -Math.atan(0 - 400 / asteroid.x - 400);
     console.log("Asteroid X: " + asteroid.x);
@@ -226,7 +227,7 @@ function initGraphics() {
     stage.addChild(asteroid);
 
 
-    //    SLIDER STUFF 
+    //    SLIDER STUFF
 
     //    // angle slider
     //    // new Slider(min, max, width, height)
@@ -384,7 +385,7 @@ function initListeners() {
         stage.addChild(fireButton);
         stage.removeChild(fireButtonPressed);
     });
-    //once pressed, the fire function will be called 
+    //once pressed, the fire function will be called
     fireButtonPressed.on("click", fire);
 
 
@@ -398,7 +399,7 @@ function initListeners() {
             stage.addChild(resetButton);
             stage.removeChild(resetButtonPressed);
         });
-        //once pressed, the fire function will be called 
+        //once pressed, the fire function will be called
         resetButtonPressed.on("click", reset);
 
     });
@@ -408,6 +409,7 @@ function fire() {
     console.log("fire was tapped");
     shotsFired = true;
     rocket.visible = true;
+    createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 6000);
     updateAngle();
 
 }
