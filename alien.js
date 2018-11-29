@@ -49,6 +49,8 @@ var myDebug = false;
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
 
+var explosionAnimation;
+
 /*
  * Initialize the stage and some createJS settings
  */
@@ -76,12 +78,26 @@ function update(event) {
         // if there is a collision = check = true
         // else if there is not a collision, check = false
         // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
-        var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 0);
-        if (checkCollision) {
-            asteroidSpeed = 0;
-            rocketSpeed = 0;
-            stage.removeChild(asteroid);
+        if (shotsFired) {
+          var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 0);
+          if (checkCollision) {
+            shotsFired = false;
+
+            // explode asteroid
+            explosionAnimation.x = asteroid.x;
+            explosionAnimation.y = asteroid.y;
+            explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
+            stage.addChild(explosionAnimation);
+            explosionAnimation.gotoAndPlay("explode");
+            stage.removeChild(rocket);
+            createjs.Tween.get(asteroid).to({alpha:0}, 300).call(function() {
+              stage.removeChild(asteroid);
+            })
+            playSound("explosionSound");
+
+          }
         }
+
 
         // console.log("ASS X" ,asteroid.x);
         // console.log("ROCKET X ", rocket.x);
@@ -303,6 +319,16 @@ function initGraphics() {
     //      // Updates the text field to the new internal data (ie. placeholder)
     //      textField.update();
 
+    // explosion animation
+    var explosionSpriteData = {
+      images: ["images/explosion.png"],
+      frames: {width:100, height:100, count:81, regX:0, regY:0, spacing:0, margin:0},
+      animations: {
+        explode: [0, 81, false]
+      }
+    };
+    explosionAnimation = new createjs.Sprite(new createjs.SpriteSheet(explosionSpriteData));
+
 
     initMuteUnMuteButtons();
     initListeners();
@@ -477,7 +503,10 @@ function setupManifest() {
     }, {
         src: "images/asteroid.png",
         id: "asteroid"
-    }
+    },	{
+		src: "sounds/explosion.wav",
+		id: "explosionSound"
+	}
 
     ];
 }
