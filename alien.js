@@ -4,7 +4,12 @@
  * @author Parsa Rajabi - ParsaRajabiPR@gmail.com
  * October 2018
  */
-
+    // TODO: 1) Make the asteroid move towards the base
+    // TODO: 2) Make it so the angle can not be changed after the rocket has been launched
+    // TODO: 3) Create the explosion after the rocket hits the asteroid - use the same one from Colin's game
+    // TODO: 4) Finish the miss/hit screens (photoshop)
+    // TODO: 5) implement the level feature: as the level increases, the speed of asteriod++
+    // TODO: 6) Make the angle bonus thing - it needs to be a pop up after the user has entered an angle and is ready to launch
 //// VARIABLES ////
 
 var mute = false;
