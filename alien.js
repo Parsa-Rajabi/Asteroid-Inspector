@@ -61,6 +61,7 @@ function init() {
 
     stage.update();
 }
+
 /*
  * Main update loop.
  */
@@ -70,23 +71,23 @@ function update(event) {
         // if there is a collision = check = true
         // else if there is not a collision, check = false
         // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
-        var checkCollision = ndgmr.checkRectCollision(rocket,asteroid,0);
-        if (checkCollision){
+        var checkCollision = ndgmr.checkRectCollision(rocket, asteroid, 0);
+        if (checkCollision) {
             asteroidSpeed = 0;
             rocketSpeed = 0;
         }
 
-                // console.log("ASS X" ,asteroid.x);
-                // console.log("ROCKET X ", rocket.x);
-                // console.log("ASS Y" ,asteroid.y);
-                // console.log("ROCKET Y" , rocket.y);
+        // console.log("ASS X" ,asteroid.x);
+        // console.log("ROCKET X ", rocket.x);
+        // console.log("ASS Y" ,asteroid.y);
+        // console.log("ROCKET Y" , rocket.y);
 
-       //new text(text, font, color)
-       stage.removeChild(scoreText);
-       scoreText = new createjs.Text(score, "23px Lato", "#ffffff");
-       scoreText.x = 403;
-       scoreText.y = 542;
-       stage.addChild(scoreText);
+        //new text(text, font, color)
+        stage.removeChild(scoreText);
+        scoreText = new createjs.Text(score, "23px Lato", "#ffffff");
+        scoreText.x = 403;
+        scoreText.y = 542;
+        stage.addChild(scoreText);
 
         //Level lable
         //new text(text, font, color)
@@ -108,18 +109,17 @@ function update(event) {
 
         asteroid.x += asteroidDeltaX;
         asteroid.y += asteroidDeltaY;
-        
-            // if ( asteroid.x >= 765 |  asteroid.x <= 0) 
-                // rocket.visible = false;
-                // level++;
-                // resetAsteroidPosition();
-            //if the rocket goes out of bounds upwards 
-            // }else if (asteroid.y <= 0) {
-                // rocket.visible = false;
-                // level++;
-                // resetRocketPosition();
-            // }
 
+        // if ( asteroid.x >= 765 |  asteroid.x <= 0)
+        // rocket.visible = false;
+        // level++;
+        // resetAsteroidPosition();
+        //if the rocket goes out of bounds upwards
+        // }else if (asteroid.y <= 0) {
+        // rocket.visible = false;
+        // level++;
+        // resetRocketPosition();
+        // }
 
 
         updateSelectPositions();
@@ -136,8 +136,8 @@ function update(event) {
                 // rocket.visible = false;
                 level++;
                 resetAsteroidPosition();
-            //if the rocket goes out of bounds upwards 
-            }else if (rocket.y <= 0) {
+                //if the rocket goes out of bounds upwards
+            } else if (rocket.y <= 0) {
                 // rocket.visible = false;
                 level++;
                 resetAsteroidPosition();
@@ -152,6 +152,7 @@ function update(event) {
 function convertToRad(degAngle) {
     return (degAngle * (Math.PI / 180));
 }
+
 /*
  * Ends the game.
  */
@@ -200,7 +201,6 @@ function initGraphics() {
     stage.addChild(base);
 
 
-
     rocket.x = 412;
     rocket.y = 475;
 
@@ -209,11 +209,11 @@ function initGraphics() {
     stage.addChild(rocket);
     // rocket.visible = false;
 
-    
+
     asteroid.x = asteroidX = getRandomNumber(500);
     // asteroid.x = 370; 
     asteroid.y = -70;
-    angleBetweenAsteroidAndBase = -Math.atan(0 - 400/asteroid.x - 400);
+    angleBetweenAsteroidAndBase = -Math.atan(0 - 400 / asteroid.x - 400);
     console.log("Asteroid X: " + asteroid.x);
     console.log("Base X: " + base.x);
     console.log("Asteroid Y: " + asteroid.y);
@@ -278,14 +278,12 @@ function initGraphics() {
     inputBox.htmlElement.style.border = "none";
 
 
-
-
-    $(document).ready(function() {
-        $('input').bind("enterKey", function(e) {
+    $(document).ready(function () {
+        $('input').bind("enterKey", function (e) {
             // alert("angle is now: " + angle);
             fire();
         });
-        $('input').keyup(function(e) {
+        $('input').keyup(function (e) {
             if (e.keyCode == 13) {
                 $(this).trigger("enterKey");
             }
@@ -300,8 +298,6 @@ function initGraphics() {
     //      textField.update();
 
 
-
-
     initMuteUnMuteButtons();
     initListeners();
 
@@ -310,15 +306,11 @@ function initGraphics() {
     stage.update();
 
 
-
-
-    
-
 }
 
 //generate a random number
 function getRandomNumber(max) {
-  return Math.floor(Math.random() * Math.floor(max));
+    return Math.floor(Math.random() * Math.floor(max));
 }
 
 //validates the user input to ensure the angle is between 0 and 180. If so there angle is set the user input
@@ -342,6 +334,7 @@ function updateSelectPositions() {
     inputBox.x = gameCanvas.getBoundingClientRect().left + 120;
     inputBox.y = gameCanvas.getBoundingClientRect().top + selectY
 }
+
 //function handleAngleSliderChange(evt) {
 //    //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
 //    angle = Math.round(evt.target.value);
@@ -377,12 +370,12 @@ function initMuteUnMuteButtons() {
 function initListeners() {
 
     //fire button attributes
-    fireButton.on("mouseover", function() {
+    fireButton.on("mouseover", function () {
         stage.addChild(fireButtonPressed);
         stage.removeChild(fireButton);
         playSound("click");
     });
-    fireButtonPressed.on("mouseout", function() {
+    fireButtonPressed.on("mouseout", function () {
         stage.addChild(fireButton);
         stage.removeChild(fireButtonPressed);
     });
@@ -391,12 +384,12 @@ function initListeners() {
 
 
     //reset button attributes
-    resetButton.on("mouseover", function() {
+    resetButton.on("mouseover", function () {
         stage.addChild(resetButtonPressed);
         stage.removeChild(resetButton);
         playSound("click");
 
-        resetButtonPressed.on("mouseout", function() {
+        resetButtonPressed.on("mouseout", function () {
             stage.addChild(resetButton);
             stage.removeChild(resetButtonPressed);
         });
@@ -421,7 +414,6 @@ function reset() {
 }
 
 
-
 //////////////////////// PRELOADJS FUNCTIONS
 
 // bitmap variables
@@ -434,50 +426,51 @@ var resetButton, resetButtonPressed;
 var rocket;
 var miss, missHover;
 var asteroid;
+
 /*
  * Add files to be loaded here.
  */
 function setupManifest() {
     manifest = [{
-            src: "images/mute.png",
-            id: "mute"
-        }, {
-            src: "images/unmute.png",
-            id: "unmute"
-        }, {
-            src: "images/background.png",
-            id: "background"
-        }, {
-            src: "images/whiteArrow.png",
-            id: "whiteArrow"
-        }, {
-            src: "images/base.png",
-            id: "base"
-        }, {
-            src: "images/fireButton.png",
-            id: "fireButton"
-        }, {
-            src: "images/fireButtonPressed.png",
-            id: "fireButtonPressed"
-        }, {
-            src: "images/resetButton.png",
-            id: "resetButton"
-        }, {
-            src: "images/resetButtonPressed.png",
-            id: "resetButtonPressed"
-        }, {
-            src: "images/iRocketNew.png",
-            id: "rocket"
-        }, {
-            src: "images/miss.png",
-            id: "miss"
-        }, {
-            src: "images/missHover.png",
-            id: "missHover"
-        },{
-            src: "images/asteroid.png",
-            id: "asteroid"
-        }
+        src: "images/mute.png",
+        id: "mute"
+    }, {
+        src: "images/unmute.png",
+        id: "unmute"
+    }, {
+        src: "images/background.png",
+        id: "background"
+    }, {
+        src: "images/whiteArrow.png",
+        id: "whiteArrow"
+    }, {
+        src: "images/base.png",
+        id: "base"
+    }, {
+        src: "images/fireButton.png",
+        id: "fireButton"
+    }, {
+        src: "images/fireButtonPressed.png",
+        id: "fireButtonPressed"
+    }, {
+        src: "images/resetButton.png",
+        id: "resetButton"
+    }, {
+        src: "images/resetButtonPressed.png",
+        id: "resetButtonPressed"
+    }, {
+        src: "images/iRocketNew.png",
+        id: "rocket"
+    }, {
+        src: "images/miss.png",
+        id: "miss"
+    }, {
+        src: "images/missHover.png",
+        id: "missHover"
+    }, {
+        src: "images/asteroid.png",
+        id: "asteroid"
+    }
 
     ];
 }
@@ -523,7 +516,7 @@ function handleFileLoad(event) {
         miss = new createjs.Bitmap(event.result);
     } else if (event.item.id == "missHover") {
         missHover = new createjs.Bitmap(event.result);
-    }else if (event.item.id == "asteroid") {
+    } else if (event.item.id == "asteroid") {
         asteroid = new createjs.Bitmap(event.result);
     }
 }
