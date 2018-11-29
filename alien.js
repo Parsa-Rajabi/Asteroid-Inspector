@@ -40,11 +40,8 @@ var asteroidPositionX;
 var asteroidPositionY;
 
 let angleBetweenAsteroidAndBase;
-
 var asteroidContainer;
-
 var asteroidX;
-
 var myDebug = false;
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
@@ -76,7 +73,7 @@ function update(event) {
         // if there is a collision = check = true
         // else if there is not a collision, check = false
         // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
-        var checkCollision = ndgmr.checkRectCollision(rocket, asteroid, 0);
+        var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 0);
         if (checkCollision) {
             asteroidSpeed = 0;
             rocketSpeed = 0;
@@ -105,6 +102,7 @@ function update(event) {
         container.rotation = -angle;
         rocket.rotation = -angle;
 
+        //TODO: Asteroid angle situation
         // asteroidPosition += asteroidSpeed;
         // asteroid.y = asteroidPosition;
         // asteroid.x -= Math.asin((asteroid.x-base.x)/(asteroid.y/base.y));
@@ -125,7 +123,6 @@ function update(event) {
         // level++;
         // resetRocketPosition();
         // }
-
 
         updateSelectPositions();
 
@@ -190,7 +187,6 @@ function initGraphics() {
     container.x = 410;
     container.y = 473;
 
-
     asteroidContainer = new createjs.Container();
     asteroidContainer.addChild(asteroid);
 
@@ -204,7 +200,6 @@ function initGraphics() {
     base.x = 15;
     base.y = 30;
     stage.addChild(base);
-
 
     rocket.x = 412;
     rocket.y = 475;
