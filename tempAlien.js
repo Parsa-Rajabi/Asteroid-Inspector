@@ -92,11 +92,6 @@ function update(event) {
             stage.removeChild(rocket);
             // createjs.Tween.get(asteroid).to({alpha:0}, 300).call(function() {
               stage.removeChild(asteroid);
-              // level++;
-              console.log("there was an explosion!");
-
-              resetAsteroidPosition();
-              fireAsteroid();
             // })
             playSound("explosionSound");
 
@@ -161,13 +156,12 @@ function update(event) {
             //reset it's position to origin at base - ready to be shot again
             if (rocket.x >= 765 | rocket.x <= 0) {
                 // rocket.visible = false;
-                // level++;
+                level++;
                 resetAsteroidPosition();
-
                 //if the rocket goes out of bounds upwards
             } else if (rocket.y <= 0) {
                 // rocket.visible = false;
-                // level++;
+                level++;
                 resetAsteroidPosition();
             }
         }
@@ -205,10 +199,6 @@ function resetAsteroidPosition() {
 /*
  * Place graphics and add them to the stage.
  */
-function fireAsteroid(){
-    createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 20000);
-}
-
 function initGraphics() {
 
     stage.addChild(background);
@@ -252,7 +242,7 @@ function initGraphics() {
     console.log("Base Y: " + base.y);
     stage.addChild(asteroid);
 
-    fireAsteroid();
+    createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 20000);
 
     //    SLIDER STUFF
 
