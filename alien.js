@@ -4,9 +4,9 @@
  * @author Parsa Rajabi - ParsaRajabiPR@gmail.com
  * October 2018
  */
-    // TODO: 1) Make the asteroid move towards the base - DONE
+    // TODO: DONE 1) Make the asteroid move towards the base
     // TODO: 2) Make it so the angle can not be changed after the rocket has been launched
-    // TODO: 3) Create the explosion after the rocket hits the asteroid - use the same one from Colin's game - DONE
+    // TODO: DONE 3) Create the explosion after the rocket hits the asteroid - use the same one from Colin's game
     // TODO: 4) Finish the miss/hit screens (photoshop)
     // TODO: 5) implement the level feature: as the level increases, the speed of asteriod++
     // TODO: 6) Make the angle bonus thing - it needs to be a pop up after the user has entered an angle and is ready to launch
@@ -78,29 +78,49 @@ function update(event) {
         // if there is a collision = check = true
         // else if there is not a collision, check = false
         // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
-        if (shotsFired) {
-          var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 1);
-          if (checkCollision) {
-            shotsFired = false;
+        try {
+            if (shotsFired) {
+                var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 1);
+                if (checkCollision) {
+                    shotsFired = false;
+                    // explode asteroid
+                    explosionAnimation.x = asteroid.x;
+                    explosionAnimation.y = asteroid.y;
+                    explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
+                    stage.addChild(explosionAnimation);
+                    explosionAnimation.gotoAndPlay("explode");
+                    stage.removeChild(rocket);
+                    // createjs.Tween.get(asteroid).to({alpha:0}, 300).call(function() {
+                    stage.removeChild(asteroid);
+                    level++;
+                    score++;
+                    console.log("there was an explosion!");
 
-            // explode asteroid
-            explosionAnimation.x = asteroid.x;
-            explosionAnimation.y = asteroid.y;
-            explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
-            stage.addChild(explosionAnimation);
-            explosionAnimation.gotoAndPlay("explode");
-            stage.removeChild(rocket);
-            // createjs.Tween.get(asteroid).to({alpha:0}, 300).call(function() {
-              stage.removeChild(asteroid);
-              // level++;
-              console.log("there was an explosion!");
+                    asteroid.x = asteroidX;
+                    asteroid.y = -70;
+                    console.log("did it reset?");
+                    console.log("asteroid's visiblity: "+asteroid.visible);
+                    console.log("asteroid's x: "+asteroid.x);
+                    console.log("asteroid's y: "+asteroid.y);
+                    stage.addChild(rocket, asteroid);
+                    fireAsteroid();
+                    resetRocketPosition();
+                    // resetAsteroidPosition();
+                    // fireAsteroid();
+                    // })
+                    playSound("explosionSound");
 
-              resetAsteroidPosition();
-              fireAsteroid();
-            // })
-            playSound("explosionSound");
+                }
+                //there was no collision
+                else{
+                    // resetAsteroidPosition();
 
-          }
+                    // level++;
+                }
+            }
+        }catch (e) {
+            console.log("error is: "+ e);
+
         }
 
 
@@ -126,28 +146,6 @@ function update(event) {
 
         container.rotation = -angle;
         rocket.rotation = -angle;
-
-        // asteroidPosition += asteroidSpeed;
-        // asteroid.y = asteroidPosition;
-        // asteroid.x -= Math.asin((asteroid.x-base.x)/(asteroid.y/base.y));
-        // console.log(angleBetweenAsteroidAndBase);
-        // const asteroidDeltaX = Math.cos(angleBetweenAsteroidAndBase) * asteroidSpeed;
-        // const asteroidDeltaY = Math.sin(angleBetweenAsteroidAndBase) * asteroidSpeed;
-
-        // asteroid.x += asteroidDeltaX;
-        // asteroid.y += asteroidDeltaY;
-
-        // if ( asteroid.x >= 765 |  asteroid.x <= 0)
-        // rocket.visible = false;
-        // level++;
-        // resetAsteroidPosition();
-        //if the rocket goes out of bounds upwards
-        // }else if (asteroid.y <= 0) {
-        // rocket.visible = false;
-        // level++;
-        // resetRocketPosition();
-        // }
-
 
         updateSelectPositions();
 
@@ -198,7 +196,12 @@ function resetRocketPosition() {
 function resetAsteroidPosition() {
     asteroid.x = asteroidX;
     asteroid.y = -70;
-
+    // console.log("did it reset?");
+    // console.log("asteroid's visiblity: "+asteroid.visible);
+    // console.log("asteroid's x: "+asteroid.x);
+    // console.log("asteroid's y: "+asteroid.y);
+    stage.addChild(rocket, asteroid);
+    fireAsteroid();
 }
 
 
@@ -207,6 +210,7 @@ function resetAsteroidPosition() {
  */
 function fireAsteroid(){
     createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 20000);
+    console.log("fireAsteroid was called");
 }
 
 function initGraphics() {
@@ -241,9 +245,9 @@ function initGraphics() {
     stage.addChild(rocket);
     // rocket.visible = false;
 
-
-    asteroid.x = asteroidX = getRandomNumber(500);
-    // asteroid.x = 370;
+    asteroidX = getRandomNumber(500);
+    asteroid.x = asteroidX;
+    asteroid.y = 400;
     asteroid.y = -70;
     angleBetweenAsteroidAndBase = -Math.atan(0 - 400 / asteroid.x - 400);
     console.log("Asteroid X: " + asteroid.x);
@@ -253,7 +257,6 @@ function initGraphics() {
     stage.addChild(asteroid);
 
     fireAsteroid();
-
     //    SLIDER STUFF
 
     //    // angle slider
