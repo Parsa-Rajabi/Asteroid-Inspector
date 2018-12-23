@@ -114,8 +114,8 @@ function update(event) {
         //new text(text, font, color)
         stage.removeChild(scoreText);
         scoreText = new createjs.Text(score, "23px Lato", "#ffffff");
-        scoreText.x = 403;
-        scoreText.y = 542;
+        scoreText.x = 639;
+        scoreText.y = 545;
         stage.addChild(scoreText);
 
         //Level lable
@@ -139,16 +139,20 @@ function update(event) {
 
             //if the rocket goes out of bounds to the left or right of screen
             //reset it's position to origin at base - ready to be shot again
-            if (rocket.x >= 765 | rocket.x <= 0) {
-                // rocket.visible = false;
+            if (rocket.x >= 765 || rocket.x <= 0) {
+                missed();
+                console.log("rocket left through x ");
                 // level++;
-                resetAsteroidPosition();
+                // rocket.visible = false;
+                // resetAsteroidPosition();
 
                 //if the rocket goes out of bounds upwards
             } else if (rocket.y <= 0) {
                 // rocket.visible = false;
+                missed();
+                console.log("rocket left through y ");
                 // level++;
-                resetAsteroidPosition();
+                // resetAsteroidPosition();
             }
         }
 
@@ -228,7 +232,6 @@ function initGraphics() {
     container.x = 410;
     container.y = 473;
 
-
     asteroidContainer = new createjs.Container();
     asteroidContainer.addChild(asteroid);
 
@@ -242,7 +245,6 @@ function initGraphics() {
     base.x = 15;
     base.y = 30;
     stage.addChild(base);
-
 
     rocket.x = 412;
     rocket.y = 475;
@@ -260,6 +262,17 @@ function initGraphics() {
     // resetAsteriod();
     fireAsteroid();
 
+    miss.x = missHover.x = 0;
+    miss.y = missHover.y = 0;
+    // miss.x = missHover.x = 95;
+    // miss.y = missHover.y = 40;
+    stage.addChild(miss);
+    miss.visible = false;
+
+    nextButton.x = nextButtonHover.x = 0;
+    nextButton.y = nextButtonHover.y = 0;
+    stage.addChild(nextButton);
+    nextButton.visible = false;
     // asteroid.y = 400;
     // asteroid.y = -70;
     // angleBetweenAsteroidAndBase = -Math.atan(0 - 400 / asteroid.x - 400);
@@ -269,7 +282,6 @@ function initGraphics() {
     // console.log("Base Y: " + base.y);
 
     //    SLIDER STUFF
-
     //    // angle slider
     //    // new Slider(min, max, width, height)
     //    angleSlider = new Slider(0, 180, 450, 30).set({
@@ -444,31 +456,70 @@ function initListeners() {
         stage.addChild(resetButtonPressed);
         stage.removeChild(resetButton);
         playSound("click");
-
-        resetButtonPressed.on("mouseout", function () {
-            stage.addChild(resetButton);
-            stage.removeChild(resetButtonPressed);
-        });
-        //once pressed, the fire function will be called
-        resetButtonPressed.on("click", reset);
-
     });
+    resetButtonPressed.on("mouseout", function () {
+        stage.addChild(resetButton);
+        stage.removeChild(resetButtonPressed);
+    });
+    //once pressed, the fire function will be called
+    resetButtonPressed.on("click", reset);
+
+    //miss attributes
+    nextButton.on("mouseover", function () {
+        stage.addChild(nextButtonHover);
+        // stage.removeChild(nextButton);
+        nextButtonHover.visible = true;
+        nextButton.visible = false;
+        playSound("click");
+    });
+    nextButtonHover.on("mouseout", function () {
+        // stage.addChild(nextButton);
+        nextButton.visible = true;
+        nextButtonHover.visible = false;
+        // stage.removeChild(nextButtonHover);
+    });
+    //once pressed, the fire function will be called
+    nextButtonHover.on("click", nextButtonPressed);
 }
+
 
 function fire() {
     console.log("fire was tapped");
     shotsFired = true;
     rocket.visible = true;
     updateAngle();
-
 }
-
 function reset() {
     console.log("reset was tapped");
     level--;
-
 }
+function missed(){
+    stage.addChild(miss);
+    stage.addChild(nextButton);
+    miss.visible = true;
+    nextButton.visible = true;
+    // fireButton.visible = fireButtonPressed.visible = false;
+    // resetButton.visible = resetButtonPressed.visible = false;
+    // stage.removeChild(fireButton);
+    // stage.removeChild(fireButtonPressed);
+    // stage.removeChild(resetButton);
+    // stage.removeChild(resetButtonPressed);
+}
+function nextButtonPressed(){
+    // miss.visible = false;
+    stage.removeChild(miss);
+    stage.removeChild(nextButton);
+    stage.removeChild(nextButtonHover);
+    resetRocketPosition();
 
+    // nextButton.visible = nextButtonHover.visible = false;
+    // fireButton.visible  = true;
+    // resetButton.visible = true;
+    stage.addChild(fireButton);
+    stage.addChild(resetButton);
+    level++;
+    score--;
+}
 
 //////////////////////// PRELOADJS FUNCTIONS
 
@@ -481,6 +532,7 @@ var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
 var rocket;
 var miss, missHover;
+var nextButton, nextButtonHover;
 var asteroid;
 
 /*
@@ -523,6 +575,12 @@ function setupManifest() {
     }, {
         src: "images/missHover.png",
         id: "missHover"
+    },{
+        src: "images/nextButton.png",
+        id: "nextButton"
+    },{
+        src: "images/nextButtonHover.png",
+        id: "nextButtonHover"
     }, {
         src: "images/asteroid.png",
         id: "asteroid"
@@ -575,6 +633,10 @@ function handleFileLoad(event) {
         miss = new createjs.Bitmap(event.result);
     } else if (event.item.id == "missHover") {
         missHover = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "nextButton") {
+        nextButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "nextButtonHover") {
+        nextButtonHover = new createjs.Bitmap(event.result);
     } else if (event.item.id == "asteroid") {
         asteroid = new createjs.Bitmap(event.result);
     }
