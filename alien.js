@@ -80,30 +80,43 @@ function update(event) {
                     explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
                     stage.addChild(explosionAnimation);
                     explosionAnimation.gotoAndPlay("explode");
-                    createjs.Tween.removeTweens(asteroid);
-                    stage.removeChild(asteroid);
-                    resetRocketPosition();
+                    // createjs.Tween.removeTweens(asteroid);
+                    resetObjects();
+                    // stage.removeChild(asteroid);
+                    // resetRocketPosition();
                     score++;
                     sucess = true;
                     playSound("explosionSound");
-
+                    console.log("there was an explosion!");
                         // asteroid.visible = false;
                     setTimeout(function(){
                         stage.addChild(hit);
                         nextLevel();
                     }, 1100);
 
-                    console.log("there was an explosion!");
-                    // newGame();
-                    // resetRocketPosition();
-                    // toggleTween(tween);
-                    // resetAsteriod();
-                    // resetAsteroidPosition();
                 }
                 //there was no collision
                 else{
-                    // resetAsteroidPosition();
-                    // level++;
+                        //if the rocket goes out of bounds to the left or right of screen
+                        //reset it's position to origin at base - ready to be shot again
+                        if (rocket.x >= 765 || rocket.x <= 0) {
+                            missedAsteroid()
+                            // missed();
+                            // console.log("rocket left through x ");
+                            // level++;
+                            // rocket.visible = false;
+                            // resetAsteroidPosition();
+
+                            //if the rocket goes out of bounds upwards
+                        } else if (rocket.y <= 0) {
+                            missedAsteroid()
+                            // rocket.visible = false;
+                            // missed();
+                            // console.log("rocket left through y ");
+                            // level++;
+                            // resetAsteroidPosition();
+                        }
+
                 }
             }
         }catch (e) {
@@ -111,10 +124,15 @@ function update(event) {
         }
 
 
-        // console.log("ASS X" ,asteroid.x);
-        // console.log("ROCKET X ", rocket.x);
-        // console.log("ASS Y" ,asteroid.y);
-        // console.log("ROCKET Y" , rocket.y);
+        if (shotsFired) {
+            const deltaX = Math.cos(convertToRad(angle)) * rocketSpeed;
+            const deltaY = Math.sin(convertToRad(angle)) * rocketSpeed;
+            rocket.x += deltaX;
+            rocket.y -= deltaY;
+
+        }
+
+
 
         //new text(text, font, color)
         stage.removeChild(scoreText);
@@ -133,33 +151,8 @@ function update(event) {
 
         container.rotation = -angle;
         rocket.rotation = -angle;
+
         updateSelectPositions();
-
-        if (shotsFired) {
-            const deltaX = Math.cos(convertToRad(angle)) * rocketSpeed;
-            const deltaY = Math.sin(convertToRad(angle)) * rocketSpeed;
-            rocket.x += deltaX;
-            rocket.y -= deltaY;
-
-            //if the rocket goes out of bounds to the left or right of screen
-            //reset it's position to origin at base - ready to be shot again
-            if (rocket.x >= 765 || rocket.x <= 0) {
-                missed();
-                console.log("rocket left through x ");
-                // level++;
-                // rocket.visible = false;
-                // resetAsteroidPosition();
-
-                //if the rocket goes out of bounds upwards
-            } else if (rocket.y <= 0) {
-                // rocket.visible = false;
-                missed();
-                console.log("rocket left through y ");
-                // level++;
-                // resetAsteroidPosition();
-            }
-        }
-
     }//ends the game
 
     stage.update(event);
@@ -203,9 +196,10 @@ function newGame(){
     asteroid.x = getRandomNumber(500);
     asteroid.y = -70;
     stage.addChild(asteroid);
-    myTween = createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 20000).call(handleComplete);
+    myTween = createjs.Tween.get(asteroid).to({x: 370, y: 400}, 1000).call(handleComplete);
     function handleComplete(){
         console.log("tween has completed");
+        missedAsteroid();
     }
     resetRocketPosition();
 }
@@ -281,8 +275,8 @@ function initGraphics() {
     miss.y = missHover.y = 0;
     // miss.x = missHover.x = 95;
     // miss.y = missHover.y = 40;
-    stage.addChild(miss);
-    miss.visible = false;
+    // stage.addChild(miss);
+    // miss.visible = false;
 
     nextButton.x = nextButtonHover.x = 0;
     nextButton.y = nextButtonHover.y = 0;
@@ -520,6 +514,18 @@ function missed(){
     // stage.removeChild(fireButtonPressed);
     // stage.removeChild(resetButton);
     // stage.removeChild(resetButtonPressed);
+}
+function resetObjects() {
+    createjs.Tween.removeTweens(asteroid);
+    stage.removeChild(asteroid);
+    resetRocketPosition();
+}
+function missedAsteroid(){
+    resetObjects();
+    stage.addChild(miss);
+    sucess = false;
+    score--;
+    nextLevel();
 }
 
 function nextLevel(){
