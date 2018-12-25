@@ -499,8 +499,9 @@ function fire() {
     updateAngle();
 }
 function reset() {
-    console.log("reset was tapped");
-    level--;
+    level = 1;
+    score = 0;
+    resetObjects();
 }
 function missed(){
     stage.addChild(nextButton);
@@ -546,6 +547,7 @@ function nextButtonPressed(){
     }else{
     stage.removeChild(miss);
     }
+
     resetButton.visible = fireButton.visible = true;
     stage.removeChild(nextButton);
     stage.removeChild(nextButtonHover);
@@ -571,7 +573,8 @@ var base;
 var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
 var rocket;
-var miss, missHover
+var miss, missHover;
+var gameover;
 var hit;
 var nextButton, nextButtonHover;
 var asteroid;
@@ -610,6 +613,9 @@ function setupManifest() {
     }, {
         src: "images/iRocketNew.png",
         id: "rocket"
+    }, {
+        src: "images/gameover.png",
+        id: "gameover"
     }, {
         src: "images/hit.png",
         id: "hit"
@@ -673,6 +679,8 @@ function handleFileLoad(event) {
         resetButtonPressed = new createjs.Bitmap(event.result);
     } else if (event.item.id == "rocket") {
         rocket = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "gameover") {
+        gameover = new createjs.Bitmap(event.result);
     } else if (event.item.id == "hit") {
         hit = new createjs.Bitmap(event.result);
     }  else if (event.item.id == "miss") {
