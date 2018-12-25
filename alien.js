@@ -36,9 +36,10 @@ var asteroidContainer;
 var asteroidX;
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
-
+var myTween;
 var explosionAnimation;
 
+var sucess = false;
 /*
  * Initialize the stage and some createJS settings
  */
@@ -67,8 +68,11 @@ function update(event) {
         // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
         try {
             if (shotsFired) {
-                var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 1);
-                if (checkCollision) {
+                // var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 1);
+                // if (checkCollision) {
+
+                //if there is a collision...
+                    if(ndgmr.checkPixelCollision(rocket, asteroid, 1)){
                     shotsFired = false;
                     // explode asteroid
                     explosionAnimation.x = asteroid.x;
@@ -76,23 +80,25 @@ function update(event) {
                     explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
                     stage.addChild(explosionAnimation);
                     explosionAnimation.gotoAndPlay("explode");
+                    createjs.Tween.removeTweens(asteroid);
                     stage.removeChild(asteroid);
-                    // rocket.visible = false;
-                    // asteroid.x = 400;
-                    // asteroid.visible = false;
-                    // stage.removeChild(rocket);
-                    // createjs.Tween.get(asteroid).to({alpha:0}, 300).call(function() {
-                    // stage.removeChild(asteroid);
-
-                    level++;
-                    score++;
-                    console.log("there was an explosion!");
-
                     resetRocketPosition();
-                    toggleTween(tween);
-                    resetAsteriod();
-                    // resetAsteroidPosition();
+                    score++;
+                    sucess = true;
                     playSound("explosionSound");
+
+                        // asteroid.visible = false;
+                    setTimeout(function(){
+                        stage.addChild(hit);
+                        nextLevel();
+                    }, 1100);
+
+                    console.log("there was an explosion!");
+                    // newGame();
+                    // resetRocketPosition();
+                    // toggleTween(tween);
+                    // resetAsteriod();
+                    // resetAsteroidPosition();
                 }
                 //there was no collision
                 else{
@@ -161,6 +167,7 @@ function update(event) {
     stage.update(event);
 }
 
+
 function convertToRad(degAngle) {
     return (degAngle * (Math.PI / 180));
 }
@@ -177,15 +184,15 @@ function resetRocketPosition() {
     rocket.x = 412;
     rocket.y = 475;
     shotsFired = false;
-    rocket.visible = true;
+    rocket.visible = false;
 }
 
 function resetAsteroidPosition() {
     // toggleTween(tween);
     asteroid.visible = true;
     // asteroid.x = 250;
-    asteroid.x = getRandomNumber(500);
-    asteroid.y = -60;
+    // asteroid.x = getRandomNumber(500);
+    // asteroid.y = -60;
     // console.log("did it reset?");
     // console.log("asteroid's visiblity: "+asteroid.visible);
     // console.log("asteroid's x: "+asteroid.x);
@@ -194,7 +201,16 @@ function resetAsteroidPosition() {
     // fireAsteroid();
 }
 
-
+function newGame(){
+    asteroid.x = getRandomNumber(500);
+    asteroid.y = -70;
+    stage.addChild(asteroid);
+    myTween = createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 20000).call(handleComplete);
+    function handleComplete(){
+        console.log("tween has completed");
+    }
+    resetRocketPosition();
+}
 /*
  * Place graphics and add them to the stage.
  */
@@ -256,11 +272,12 @@ function initGraphics() {
 
     // asteroidX = getRandomNumber(500);
     // asteroid.x = asteroidX;
-    asteroid.x = getRandomNumber(500);
-    asteroid.y = -70;
-    stage.addChild(asteroid);
+    // asteroid.x = getRandomNumber(500);
+    // asteroid.y = -70;
+    // stage.addChild(asteroid);
+    newGame();
     // resetAsteriod();
-    fireAsteroid();
+    // fireAsteroid();
 
     miss.x = missHover.x = 0;
     miss.y = missHover.y = 0;
@@ -271,8 +288,8 @@ function initGraphics() {
 
     nextButton.x = nextButtonHover.x = 0;
     nextButton.y = nextButtonHover.y = 0;
-    stage.addChild(nextButton);
-    nextButton.visible = false;
+    // stage.addChild(nextButton);
+    // nextButton.visible = false;
     // asteroid.y = 400;
     // asteroid.y = -70;
     // angleBetweenAsteroidAndBase = -Math.atan(0 - 400 / asteroid.x - 400);
@@ -494,10 +511,11 @@ function reset() {
     level--;
 }
 function missed(){
-    stage.addChild(miss);
     stage.addChild(nextButton);
-    miss.visible = true;
+    stage.addChild(nextButtonHover);
     nextButton.visible = true;
+    stage.addChild(miss);
+    miss.visible = true;
     // fireButton.visible = fireButtonPressed.visible = false;
     // resetButton.visible = resetButtonPressed.visible = false;
     // stage.removeChild(fireButton);
@@ -505,12 +523,30 @@ function missed(){
     // stage.removeChild(resetButton);
     // stage.removeChild(resetButtonPressed);
 }
+
+function nextLevel(){
+    resetButton.visible = fireButton.visible = false;
+    stage.addChild(nextButtonHover);
+    stage.addChild(nextButton);
+    nextButtonHover.visible = false;
+    // resetRocketPosition();
+
+}
 function nextButtonPressed(){
+    asteroid.x = getRandomNumber(500);
+    asteroid.y = 0;
     // miss.visible = false;
+
+    if (sucess){
+    stage.removeChild(hit);
+    }else{
     stage.removeChild(miss);
+    }
+    resetButton.visible = fireButton.visible = true;
     stage.removeChild(nextButton);
     stage.removeChild(nextButtonHover);
-    resetRocketPosition();
+    newGame();
+    // resetRocketPosition();
 
     // nextButton.visible = nextButtonHover.visible = false;
     // fireButton.visible  = true;
@@ -531,7 +567,8 @@ var base;
 var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
 var rocket;
-var miss, missHover;
+var miss, missHover
+var hit;
 var nextButton, nextButtonHover;
 var asteroid;
 
@@ -569,6 +606,9 @@ function setupManifest() {
     }, {
         src: "images/iRocketNew.png",
         id: "rocket"
+    }, {
+        src: "images/hit.png",
+        id: "hit"
     }, {
         src: "images/miss.png",
         id: "miss"
@@ -629,7 +669,9 @@ function handleFileLoad(event) {
         resetButtonPressed = new createjs.Bitmap(event.result);
     } else if (event.item.id == "rocket") {
         rocket = new createjs.Bitmap(event.result);
-    } else if (event.item.id == "miss") {
+    } else if (event.item.id == "hit") {
+        hit = new createjs.Bitmap(event.result);
+    }  else if (event.item.id == "miss") {
         miss = new createjs.Bitmap(event.result);
     } else if (event.item.id == "missHover") {
         missHover = new createjs.Bitmap(event.result);
