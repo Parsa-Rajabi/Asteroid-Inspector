@@ -587,6 +587,7 @@ var resetButton, resetButtonPressed;
 var rocket;
 var miss, missHover;
 var gameover;
+var resetButton2, resetButtonPressed2;
 var hit;
 var nextButton, nextButtonHover;
 var asteroid;
@@ -649,7 +650,13 @@ function setupManifest() {
     },	{
 		src: "sounds/explosion.wav",
 		id: "explosionSound"
-	}
+	}, {
+        src: "images/gameoverRest.png",
+        id: "resetButton2"
+    }, {
+        src: "images/gameoverRestHover.png",
+        id: "resetButtonPressed2"
+    }
 
     ];
 }
@@ -705,6 +712,10 @@ function handleFileLoad(event) {
         nextButtonHover = new createjs.Bitmap(event.result);
     } else if (event.item.id == "asteroid") {
         asteroid = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "resetButton2") {
+        resetButton2 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "resetButtonPressed2") {
+        resetButtonPressed2 = new createjs.Bitmap(event.result);
     }
 }
 
