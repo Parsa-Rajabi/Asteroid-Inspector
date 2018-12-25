@@ -170,70 +170,35 @@ function endGame() {
     gameStarted = false;
 }
 
-//sets the position of rocket to origin and sets shorts fired to false - ready to be launched again
-function resetRocketPosition() {
-    rocket.x = 412;
-    rocket.y = 475;
-    shotsFired = false;
-    rocket.visible = false;
-    rocketAtBase = true;
-}
 
-function resetAsteroidPosition() {
-    // toggleTween(tween);
-    asteroid.visible = true;
-    // asteroid.x = 250;
-    // asteroid.x = getRandomNumber(500);
-    // asteroid.y = -60;
-    // console.log("did it reset?");
-    // console.log("asteroid's visiblity: "+asteroid.visible);
-    // console.log("asteroid's x: "+asteroid.x);
-    // console.log("asteroid's y: "+asteroid.y);
-    // stage.addChild(rocket, asteroid);
-    // fireAsteroid();
-}
-
-function newGame(){
-    success = false;
-    asteroid.x = getRandomNumber(500);
-    asteroid.y = -70;
-    stage.addChild(asteroid);
-    myTween = createjs.Tween.get(asteroid).to({x: 360, y: 345}, 20000).call(handleComplete);
-    function handleComplete(){
-        console.log("tween has completed");
-        stage.addChild(gameover);
-        resetButton.visible = fireButton.visible = false;
-    }
-    resetRocketPosition();
-}
 /*
  * Place graphics and add them to the stage.
  */
-function fireAsteroid(){
-    tween = createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 20000);
-    // console.log("fireAsteroid was called");
-}
+// function fireAsteroid(){
+//     tween = createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 200);
+//     // console.log("fireAsteroid was called");
+// }
 
-function resetAsteriod(){
-    createjs.Tween.get(asteroid).to({x: getRandomNumber(500), y: -60}, -1).to({x: STAGE_WIDTH/2, y: 600}, 20000);
-    stage.addChild(asteroid);
-    console.log("reset was called");
-
-    // createjs.Tween.get(asteroid).wait(1000).to({x: STAGE_WIDTH/2, y: 600}, 20000);
-    // toggleTween(tween);
-    // asteroid.visible = true;
-    // fireAsteroid();
-}
-
-function toggleTween(tween) {
-    if (tween.paused) {
-        // tween.paused = false;
-        // tween.setPaused(false);
-    } else {
-        tween.paused = true;
-        tween.setPaused(true);
-    }
-}
+// function resetAsteriod(){
+//     createjs.Tween.get(asteroid).to({x: getRandomNumber(500), y: -60}, -1).to({x: STAGE_WIDTH/2, y: 600}, 20000);
+//     stage.addChild(asteroid);
+//     console.log("reset was called");
+//
+//     // createjs.Tween.get(asteroid).wait(1000).to({x: STAGE_WIDTH/2, y: 600}, 20000);
+//     // toggleTween(tween);
+//     // asteroid.visible = true;
+//     // fireAsteroid();
+// }
+//
+// function toggleTween(tween) {
+//     if (tween.paused) {
+//         // tween.paused = false;
+//         // tween.setPaused(false);
+//     } else {
+//         tween.paused = true;
+//         tween.setPaused(true);
+//     }
+// }
 
 function initGraphics() {
 
@@ -478,6 +443,23 @@ function initListeners() {
     //once pressed, the fire function will be called
     resetButtonPressed.on("click", reset);
 
+    //reset button 2attributes
+    resetButton2.on("mouseover", function () {
+        stage.addChild(resetButtonPressed2);
+        resetButtonPressed2.visible = true;
+        resetButton2.visible = false;
+        // stage.removeChild(resetButton2);
+        playSound("click");
+    });
+    resetButtonPressed2.on("mouseout", function () {
+        // stage.addChild(resetButton2);
+        resetButton2.visible = true;
+        resetButtonPressed2.visible = false;
+        // stage.removeChild(resetButtonPressed2);
+    });
+    //once pressed, the fire function will be called
+    resetButtonPressed2.on("click", reset);
+
     //miss attributes
     nextButton.on("mouseover", function () {
         stage.addChild(nextButtonHover);
@@ -507,9 +489,14 @@ function fire() {
 
 }
 function reset() {
+    stage.removeChild(gameover);
+    resetButton.visible = fireButton.visible = true;
+    stage.removeChild(resetButton2);
+    stage.removeChild(resetButtonPressed2);
     level = 1;
     score = 0;
     resetObjects();
+    newGame();
 }
 // function missed(){
 //     stage.addChild(nextButton);
@@ -541,8 +528,33 @@ function missedAsteroid(){
     }else {
         score = 0;
     }
+}
+//sets the position of rocket to origin and sets shorts fired to false - ready to be launched again
+function resetRocketPosition() {
+    rocket.x = 412;
+    rocket.y = 475;
+    shotsFired = false;
+    rocket.visible = false;
+    rocketAtBase = true;
+}
 
-    // nextLevel();
+
+function newGame(){
+    success = false;
+    asteroid.x = getRandomNumber(500);
+    asteroid.y = -70;
+    stage.addChild(asteroid);
+    myTween = createjs.Tween.get(asteroid).to({x: 360, y: 345}, 2000).call(handleComplete);
+    function handleComplete(){
+        console.log("tween has completed");
+        stage.addChild(gameover);
+        resetButton.visible = fireButton.visible = false;
+        stage.addChild(resetButton2);
+        stage.addChild(resetButtonPressed2);
+        resetButtonPressed2.visible = false;
+
+    }
+    resetRocketPosition();
 }
 
 function nextLevel(){
@@ -569,8 +581,8 @@ function nextButtonPressed(){
     // nextButton.visible = nextButtonHover.visible = false;
     // fireButton.visible  = true;
     // resetButton.visible = true;
-    stage.addChild(fireButton);
-    stage.addChild(resetButton);
+    // stage.addChild(fireButton);
+    // stage.addChild(resetButton);
     level++;
     // score--;
 }
@@ -651,10 +663,10 @@ function setupManifest() {
 		src: "sounds/explosion.wav",
 		id: "explosionSound"
 	}, {
-        src: "images/gameoverRest.png",
+        src: "images/gameoverReset.png",
         id: "resetButton2"
     }, {
-        src: "images/gameoverRestHover.png",
+        src: "images/gameoverResetHover.png",
         id: "resetButtonPressed2"
     }
 
