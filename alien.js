@@ -27,10 +27,12 @@ var levelText;
 var level = 1;
 var score = 0;
 var rocketAtBase;
+
 var asteroidContainer;
+var asteroidSpeed = 20000;
+
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
-var myTween;
 var explosionAnimation;
 
 var success = false;
@@ -274,15 +276,6 @@ function updateSelectPositions() {
     inputBox.y = gameCanvas.getBoundingClientRect().top + selectY
 }
 
-//function handleAngleSliderChange(evt) {
-//    //angle = Math.floor(evt.target.value); //assigns the value of slider change to the variable
-//    angle = Math.round(evt.target.value);
-//    angleText.text = inputBox.value;
-//    //    container.scaleX = container.scaleY  = angle / 8.5 * 1.1;
-//
-//    //    console.log("angle is " + angle);
-//}
-
 /*
  * Adds the mute and unmute buttons to the stage and defines listeners
  */
@@ -395,6 +388,11 @@ function reset() {
     newGame();
 }
 
+function levelUp(){
+    level++;
+    asteroidSpeed = asteroidSpeed / 3;
+}
+
 //resets all moving objects of the game
 function resetObjects() {
     //stops the createjs.tween animiation on asteroid
@@ -434,10 +432,9 @@ function newGame() {
     asteroid.x = getRandomNumber(500);
     asteroid.y = -70;
     stage.addChild(asteroid);
-    myTween = createjs.Tween.get(asteroid).to({x: 360, y: 345}, 20000).call(handleComplete);
+    createjs.Tween.get(asteroid).to({x: 360, y: 345}, asteroidSpeed).call(handleComplete);
 //the function after the asteroid hits the base
     function handleComplete() {
-        console.log("tween has completed");
         stage.addChild(gameover);
         resetButton.visible = fireButton.visible = false;
         stage.addChild(resetButton2);
@@ -468,7 +465,7 @@ function nextButtonPressed() {
     stage.removeChild(nextButton);
     stage.removeChild(nextButtonHover);
     newGame();
-    level++;
+    levelUp();
 }
 
 //////////////////////// PRELOADJS FUNCTIONS
