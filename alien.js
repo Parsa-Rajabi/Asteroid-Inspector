@@ -11,7 +11,6 @@
     // TODO: 5) implement the level feature: as the level increases, the speed of asteriod++
     // TODO: 6) Make the angle bonus thing - it needs to be a pop up after the user has entered an angle and is ready to launch
 //// VARIABLES ////
-
 var mute = false;
 var FPS = 20;
 var STAGE_WIDTH, STAGE_HEIGHT;
@@ -59,7 +58,6 @@ function init() {
  */
 function update(event) {
     if (gameStarted) {
-
 
         try {
             if (shotsFired) {
@@ -162,14 +160,13 @@ function initGraphics() {
 
     rocket.x = 412;
     rocket.y = 475;
+    stage.addChild(rocket);
+    rocket.visible = false;
 
     rocket.regX = -10;
     rocket.regY = 25.5;
     stage.addChild(rocket);
     // rocket.visible = false;
-
-    //adds asteroid to game with given positions
-    newGame();
 
     //positioning of the fire button
     fireButton.x = fireButtonPressed.x = 250;
@@ -241,6 +238,7 @@ function initGraphics() {
 
     initMuteUnMuteButtons();
     initListeners();
+    start();
 
     // start the game
     gameStarted = true;
@@ -362,6 +360,31 @@ function initListeners() {
     });
     //once pressed, the fire function will be called
     nextButtonHover.on("click", nextButtonPressed);
+
+    //start attributes
+    startButton.on("mouseover", function () {
+        stage.addChild(startButtonHover);
+        stage.removeChild(startButton);
+        // startButtonHover.visible = true;
+        // startButton.visible = false;
+        playSound("click");
+    });
+    startButtonHover.on("mouseout", function () {
+        stage.addChild(startButton);
+        // startButton.visible = true;
+        // startButtonHover.visible = false;
+        stage.removeChild(startButtonHover);
+    });
+    //once pressed, the fire function will be called
+    startButtonHover.on("click", function () {
+        stage.removeChild(instructions);
+        startButtonHover.visible = startButton.visible = false;
+        resetButton.visible = fireButton.visible = true;
+        // stage.removeChild(startButtonHover);
+        // stage.removeChild(startButton);
+        //adds asteroid to game with given positions
+        newGame();
+    });
 }
 
 //fire the rocket out of the base
@@ -387,7 +410,11 @@ function reset() {
     resetObjects();
     newGame();
 }
-
+function start(){
+    stage.addChild(instructions);
+    resetButton.visible = fireButton.visible = false;
+    stage.addChild(startButton);
+}
 function levelUp(){
     level++;
     asteroidSpeed = asteroidSpeed / 3;
@@ -477,6 +504,8 @@ var whiteArrow;
 var base;
 var fireButton, fireButtonPressed;
 var resetButton, resetButtonPressed;
+var startButton, startButtonHover;
+var instructions;
 var rocket;
 var miss, missHover;
 var gameover;
@@ -549,6 +578,15 @@ function setupManifest() {
     }, {
         src: "images/gameoverResetHover.png",
         id: "resetButtonPressed2"
+    }, {
+        src: "images/startButton.png",
+        id: "startButton"
+    }, {
+        src: "images/startButtonHover.png",
+        id: "startButtonHover"
+    }, {
+        src: "images/instructions.png",
+        id: "instructions"
     }
 
     ];
@@ -609,6 +647,12 @@ function handleFileLoad(event) {
         resetButton2 = new createjs.Bitmap(event.result);
     } else if (event.item.id == "resetButtonPressed2") {
         resetButtonPressed2 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "startButton") {
+        startButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "startButtonHover") {
+        startButtonHover = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "instructions") {
+        instructions = new createjs.Bitmap(event.result);
     }
 }
 
