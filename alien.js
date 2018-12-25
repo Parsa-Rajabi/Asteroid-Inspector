@@ -5,9 +5,9 @@
  * October 2018
  */
     // TODO: DONE 1) Make the asteroid move towards the base
-    // TODO: 2) Make it so the angle can not be changed after the rocket has been launched
+    // TODO: DONE 2) Make it so the angle can not be changed after the rocket has been launched
     // TODO: DONE 3) Create the explosion after the rocket hits the asteroid - use the same one from Colin's game
-    // TODO: 4) Finish the miss/hit screens (photoshop)
+    // TODO: DONE 4) Finish the miss/hit screens (photoshop)
     // TODO: 5) implement the level feature: as the level increases, the speed of asteriod++
     // TODO: 6) Make the angle bonus thing - it needs to be a pop up after the user has entered an angle and is ready to launch
 //// VARIABLES ////
@@ -16,7 +16,6 @@ var mute = false;
 var FPS = 20;
 var STAGE_WIDTH, STAGE_HEIGHT;
 var gameStarted = false;
-var angleSlider;
 var scoreText;
 var angle = 0;
 var container;
@@ -26,20 +25,16 @@ var shotsFired = false;
 var rocketSpeed = 10;
 var levelText;
 var level = 1;
-var asteroidPosition = -70;
-var asteroidSpeed = 1.5;
 var score = 0;
-var tween;
 var rocketAtBase;
-let angleBetweenAsteroidAndBase;
 var asteroidContainer;
-var asteroidX;
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
 var myTween;
 var explosionAnimation;
 
 var success = false;
+
 /*
  * Initialize the stage and some createJS settings
  */
@@ -54,7 +49,6 @@ function init() {
 
     setupManifest(); // preloadJS
     startPreload();
-
     stage.update();
 }
 
@@ -64,16 +58,16 @@ function init() {
 function update(event) {
     if (gameStarted) {
 
-        // if there is a collision = check = true
-        // else if there is not a collision, check = false
-        // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
+
         try {
             if (shotsFired) {
-                // var checkCollision = ndgmr.checkPixelCollision(rocket, asteroid, 1);
-                // if (checkCollision) {
-
+                const deltaX = Math.cos(convertToRad(angle)) * rocketSpeed;
+                const deltaY = Math.sin(convertToRad(angle)) * rocketSpeed;
+                rocket.x += deltaX;
+                rocket.y -= deltaY;
+                // intersection is null if no collision, otherwise a {x,y,width,height}-Object is returned
                 //if there is a collision...
-                    if(ndgmr.checkPixelCollision(rocket, asteroid, 1) ){
+                if (ndgmr.checkPixelCollision(rocket, asteroid, 1)) {
                     shotsFired = false;
                     // explode asteroid
                     explosionAnimation.x = asteroid.x;
@@ -81,58 +75,37 @@ function update(event) {
                     explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
                     stage.addChild(explosionAnimation);
                     explosionAnimation.gotoAndPlay("explode");
-                    // createjs.Tween.removeTweens(asteroid);
+
                     resetObjects();
-                    // stage.removeChild(asteroid);
-                    // resetRocketPosition();
                     score++;
                     success = true;
                     playSound("explosionSound");
-                    console.log("there was an explosion!");
-                        // asteroid.visible = false;
-                    setTimeout(function(){
+                    setTimeout(function () {
                         stage.addChild(hit);
-                        nextLevel();
+                        showNextButton();
                     }, 1100);
 
                 }
                 //there was no collision
-                else{
-                        //if the rocket goes out of bounds to the left or right of screen
-                        //reset it's position to origin at base - ready to be shot again
-                        if (rocket.x >= 765 || rocket.x <= 0) {
-                            missedAsteroid()
-                            // missed();
-                            // console.log("rocket left through x ");
-                            // level++;
-                            // rocket.visible = false;
-                            // resetAsteroidPosition();
-
-                            //if the rocket goes out of bounds upwards
-                        } else if (rocket.y <= 0) {
-                            missedAsteroid()
-                            // rocket.visible = false;
-                            // missed();
-                            // console.log("rocket left through y ");
-                            // level++;
-                            // resetAsteroidPosition();
-                        }
-
+                else {
+                    //if the rocket goes out of bounds to the left or right of screen
+                    //reset it's position to origin at base - ready to be shot again
+                    if (rocket.x >= 765 || rocket.x <= 0) {
+                        missedAsteroid()
+                    } else if (rocket.y <= 0) {
+                        missedAsteroid()
+                    }
                 }
             }
-        }catch (e) {
-            console.log("error is: "+ e);
+        } catch (e) {
+            console.log("error is: " + e);
         }
-
 
         if (shotsFired) {
-            const deltaX = Math.cos(convertToRad(angle)) * rocketSpeed;
-            const deltaY = Math.sin(convertToRad(angle)) * rocketSpeed;
-            rocket.x += deltaX;
-            rocket.y -= deltaY;
+
         }
 
-
+        //text boxes
 
         //new text(text, font, color)
         stage.removeChild(scoreText);
@@ -158,47 +131,11 @@ function update(event) {
     stage.update(event);
 }
 
-
+//converts a given degrees angle to radians
 function convertToRad(degAngle) {
     return (degAngle * (Math.PI / 180));
 }
 
-/*
- * Ends the game.
- */
-function endGame() {
-    gameStarted = false;
-}
-
-
-/*
- * Place graphics and add them to the stage.
- */
-// function fireAsteroid(){
-//     tween = createjs.Tween.get(asteroid).to({x: STAGE_WIDTH/2, y: 600}, 200);
-//     // console.log("fireAsteroid was called");
-// }
-
-// function resetAsteriod(){
-//     createjs.Tween.get(asteroid).to({x: getRandomNumber(500), y: -60}, -1).to({x: STAGE_WIDTH/2, y: 600}, 20000);
-//     stage.addChild(asteroid);
-//     console.log("reset was called");
-//
-//     // createjs.Tween.get(asteroid).wait(1000).to({x: STAGE_WIDTH/2, y: 600}, 20000);
-//     // toggleTween(tween);
-//     // asteroid.visible = true;
-//     // fireAsteroid();
-// }
-//
-// function toggleTween(tween) {
-//     if (tween.paused) {
-//         // tween.paused = false;
-//         // tween.setPaused(false);
-//     } else {
-//         tween.paused = true;
-//         tween.setPaused(true);
-//     }
-// }
 
 function initGraphics() {
 
@@ -212,7 +149,6 @@ function initGraphics() {
     asteroidContainer.addChild(asteroid);
 
     container.addChild(whiteArrow);
-    //    container.addChild(rocket);
     stage.addChild(container);
 
     container.regX = -3;
@@ -230,47 +166,8 @@ function initGraphics() {
     stage.addChild(rocket);
     // rocket.visible = false;
 
-    // asteroidX = getRandomNumber(500);
-    // asteroid.x = asteroidX;
-    // asteroid.x = getRandomNumber(500);
-    // asteroid.y = -70;
-    // stage.addChild(asteroid);
+    //adds asteroid to game with given positions
     newGame();
-    // resetAsteriod();
-    // fireAsteroid();
-
-    miss.x = missHover.x = 0;
-    miss.y = missHover.y = 0;
-    // miss.x = missHover.x = 95;
-    // miss.y = missHover.y = 40;
-    // stage.addChild(miss);
-    // miss.visible = false;
-
-    nextButton.x = nextButtonHover.x = 0;
-    nextButton.y = nextButtonHover.y = 0;
-    // stage.addChild(nextButton);
-    // nextButton.visible = false;
-    // asteroid.y = 400;
-    // asteroid.y = -70;
-    // angleBetweenAsteroidAndBase = -Math.atan(0 - 400 / asteroid.x - 400);
-    // console.log("Asteroid X: " + asteroid.x);
-    // console.log("Base X: " + base.x);
-    // console.log("Asteroid Y: " + asteroid.y);
-    // console.log("Base Y: " + base.y);
-
-    //    SLIDER STUFF
-    //    // angle slider
-    //    // new Slider(min, max, width, height)
-    //    angleSlider = new Slider(0, 180, 450, 30).set({
-    //        x: 180,
-    //        y: 450,
-    //        value: 0 //default value
-    //    });
-    //
-    //
-    //    angleSlider.on("change", handleAngleSliderChange, this); // assign event handler to the slider (What function to call)
-    //    stage.addChild(angleSlider);
-
 
     //positioning of the fire button
     fireButton.x = fireButtonPressed.x = 250;
@@ -289,31 +186,34 @@ function initGraphics() {
     inputBoxHTML.placeholder.color = "white";
     inputBoxHTML.id = "inputBox";
     inputBoxHTML.class = "overlayed";
+
     //positioning
     inputBoxHTML.style.position = "absolute";
     inputBoxHTML.style.top = 0;
     inputBoxHTML.style.left = 0;
+
     //width and height
     inputBoxHTML.style.width = "35px";
     inputBoxHTML.style.height = "35px";
+
     //text background colour
     inputBoxHTML.style.background = "transparent";
+
     //font style
     inputBoxHTML.style.fontSize = "20px";
     inputBoxHTML.style.color = "white";
     inputBoxHTML.maxLength = "3";
-
     inputBoxHTML.onkeyup = updateAngle;
     // inputBoxHTML.onchange= updateAngle;
 
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
     stage.addChild(inputBox);
-    //    inputBox.visible = true;
+    //TODO: Change the outline of the inputbox using border
     //    inputBox.htmlElement.style.border = "2px solid red";
     inputBox.htmlElement.style.border = "none";
 
-
+    //after users presses enter the function fire is invoked
     $(document).ready(function () {
         $('input').bind("enterKey", function (e) {
             // alert("angle is now: " + angle);
@@ -326,20 +226,14 @@ function initGraphics() {
 
         });
     });
-    //    var UserInput = new TextInput();
-    //      UserInput.y = UserInput.x = 400;
-    //      UserInput.placeHolder = "Input Field";
-    //      stage.addChild(UserInput);
-    //      // Updates the text field to the new internal data (ie. placeholder)
-    //      textField.update();
 
     // explosion animation
     var explosionSpriteData = {
-      images: ["images/explosion.png"],
-      frames: {width:100, height:100, count:81, regX:0, regY:0, spacing:0, margin:0},
-      animations: {
-        explode: [0, 81, false]
-      }
+        images: ["images/explosion.png"],
+        frames: {width: 100, height: 100, count: 81, regX: 0, regY: 0, spacing: 0, margin: 0},
+        animations: {
+            explode: [0, 81, false]
+        }
     };
     explosionAnimation = new createjs.Sprite(new createjs.SpriteSheet(explosionSpriteData));
 
@@ -349,18 +243,16 @@ function initGraphics() {
     // start the game
     gameStarted = true;
     stage.update();
-
-
 }
 
-//generate a random number
+//generate a random number @param(max number)
 function getRandomNumber(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
 //validates the user input to ensure the angle is between 0 and 180. If so there angle is set the user input
 function updateAngle() {
-    if(rocketAtBase){
+    if (rocketAtBase) {
         var checkAngle = inputBoxHTML.value;
         if (checkAngle >= 0 && checkAngle <= 180)
             angle = inputBoxHTML.value;
@@ -443,6 +335,7 @@ function initListeners() {
     //once pressed, the fire function will be called
     resetButtonPressed.on("click", reset);
 
+    //the gameover reset button properties
     //reset button 2attributes
     resetButton2.on("mouseover", function () {
         stage.addChild(resetButtonPressed2);
@@ -478,16 +371,19 @@ function initListeners() {
     nextButtonHover.on("click", nextButtonPressed);
 }
 
-
+//fire the rocket out of the base
 function fire() {
-    if (!success && rocketAtBase){
-    shotsFired = true;
-    rocket.visible = true;
-    updateAngle();
-    rocketAtBase = false;
+    //!success: checks to make sure there is no collision - the rocket will only fire if there wsa NOT a collison
+    //rocketAtBase: checks to insure the rocket is at base so the user does not change the directions of the rocket mid-air
+    if (!success && rocketAtBase) {
+        shotsFired = true;
+        rocket.visible = true;
+        updateAngle();
+        rocketAtBase = false;
     }
-
 }
+
+//resets the game both reset buttons use this function
 function reset() {
     stage.removeChild(gameover);
     resetButton.visible = fireButton.visible = true;
@@ -498,37 +394,31 @@ function reset() {
     resetObjects();
     newGame();
 }
-// function missed(){
-//     stage.addChild(nextButton);
-//     stage.addChild(nextButtonHover);
-//     nextButton.visible = true;
-//     stage.addChild(miss);
-//     miss.visible = true;
-//     // fireButton.visible = fireButtonPressed.visible = false;
-//     // resetButton.visible = resetButtonPressed.visible = false;
-//     // stage.removeChild(fireButton);
-//     // stage.removeChild(fireButtonPressed);
-//     // stage.removeChild(resetButton);
-//     // stage.removeChild(resetButtonPressed);
-// }
+
+//resets all moving objects of the game
 function resetObjects() {
+    //stops the createjs.tween animiation on asteroid
     createjs.Tween.removeTweens(asteroid);
     stage.removeChild(asteroid);
     resetRocketPosition();
 }
-function missedAsteroid(){
+
+//after a rocket is missed, a message for a duration of 1750 milli seconds appears so the user tries again
+function missedAsteroid() {
     // resetObjects();
     stage.addChildAt(miss, 1);
-    setTimeout(function(){
-            stage.removeChild(miss);
-    },1750);
+    setTimeout(function () {
+        stage.removeChild(miss);
+    }, 1750);
     resetRocketPosition();
-    if(score > 0){
+    //check to insure the user does not go in to the negative points
+    if (score > 0) {
         score--;
-    }else {
+    } else {
         score = 0;
     }
 }
+
 //sets the position of rocket to origin and sets shorts fired to false - ready to be launched again
 function resetRocketPosition() {
     rocket.x = 412;
@@ -538,53 +428,47 @@ function resetRocketPosition() {
     rocketAtBase = true;
 }
 
-
-function newGame(){
+//a new game is generated: the asteroid position is reset and a tween animations moves towards the base
+function newGame() {
     success = false;
     asteroid.x = getRandomNumber(500);
     asteroid.y = -70;
     stage.addChild(asteroid);
-    myTween = createjs.Tween.get(asteroid).to({x: 360, y: 345}, 2000).call(handleComplete);
-    function handleComplete(){
+    myTween = createjs.Tween.get(asteroid).to({x: 360, y: 345}, 20000).call(handleComplete);
+//the function after the asteroid hits the base
+    function handleComplete() {
         console.log("tween has completed");
         stage.addChild(gameover);
         resetButton.visible = fireButton.visible = false;
         stage.addChild(resetButton2);
         stage.addChild(resetButtonPressed2);
         resetButtonPressed2.visible = false;
-
     }
     resetRocketPosition();
 }
 
-function nextLevel(){
+//displays the nextButton on screen
+function showNextButton() {
     resetButton.visible = fireButton.visible = false;
     stage.addChild(nextButtonHover);
     stage.addChild(nextButton);
     nextButtonHover.visible = false;
-    // resetRocketPosition();
-
 }
-function nextButtonPressed(){
-    if (success){
-    stage.removeChild(hit);
-    }else{
-    stage.removeChild(miss);
+
+//deals with the nextButton on click
+function nextButtonPressed() {
+    //check to see which screen to remove
+    if (success) {
+        stage.removeChild(hit);
+    } else {
+        stage.removeChild(miss);
     }
 
     resetButton.visible = fireButton.visible = true;
     stage.removeChild(nextButton);
     stage.removeChild(nextButtonHover);
     newGame();
-    // resetRocketPosition();
-
-    // nextButton.visible = nextButtonHover.visible = false;
-    // fireButton.visible  = true;
-    // resetButton.visible = true;
-    // stage.addChild(fireButton);
-    // stage.addChild(resetButton);
     level++;
-    // score--;
 }
 
 //////////////////////// PRELOADJS FUNCTIONS
@@ -650,19 +534,19 @@ function setupManifest() {
     }, {
         src: "images/missHover.png",
         id: "missHover"
-    },{
+    }, {
         src: "images/nextButton.png",
         id: "nextButton"
-    },{
+    }, {
         src: "images/nextButtonHover.png",
         id: "nextButtonHover"
     }, {
         src: "images/asteroid.png",
         id: "asteroid"
-    },	{
-		src: "sounds/explosion.wav",
-		id: "explosionSound"
-	}, {
+    }, {
+        src: "sounds/explosion.wav",
+        id: "explosionSound"
+    }, {
         src: "images/gameoverReset.png",
         id: "resetButton2"
     }, {
@@ -714,7 +598,7 @@ function handleFileLoad(event) {
         gameover = new createjs.Bitmap(event.result);
     } else if (event.item.id == "hit") {
         hit = new createjs.Bitmap(event.result);
-    }  else if (event.item.id == "miss") {
+    } else if (event.item.id == "miss") {
         miss = new createjs.Bitmap(event.result);
     } else if (event.item.id == "missHover") {
         missHover = new createjs.Bitmap(event.result);
