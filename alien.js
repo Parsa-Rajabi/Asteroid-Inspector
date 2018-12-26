@@ -209,8 +209,8 @@ function initGraphics() {
     inputBoxHTML.style.fontSize = "20px";
     inputBoxHTML.style.color = "white";
     inputBoxHTML.maxLength = "3";
-    inputBoxHTML.onkeyup = updateAngle;
-    // inputBoxHTML.onchange= updateAngle;
+    // inputBoxHTML.onkeyup = updateAngle;
+    inputBoxHTML.onchange= updateAngle;
 
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
