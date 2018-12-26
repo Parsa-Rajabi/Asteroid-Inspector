@@ -28,7 +28,10 @@ var score = 0;
 var rocketAtBase;
 
 var asteroidContainer;
-var asteroidSpeed = 20000;
+var asteroidSpeedInitial = 20000;
+// var asteroidSpeedInitial =1500;
+var asteroidSpeed = asteroidSpeedInitial;
+
 
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
@@ -80,10 +83,12 @@ function update(event) {
                     score++;
                     success = true;
                     playSound("explosionSound");
-                    setTimeout(function () {
-                        stage.addChild(hit);
-                        showNextButton();
-                    }, 1100);
+                    newGame();
+                    levelUp();
+                    // setTimeout(function () {
+                    //     stage.addChild(hit);
+                    //     showNextButton();
+                    // }, 1100);
 
                 }
                 //there was no collision
@@ -118,7 +123,7 @@ function update(event) {
         //new text(text, font, color)
         stage.removeChild(levelText);
         levelText = new createjs.Text(level, "25px Big John", "white");
-        levelText.x = 167 - levelText.getMeasuredWidth();
+        levelText.x = 177 - levelText.getMeasuredWidth();
         levelText.y = 80;
         stage.addChild(levelText);
 
@@ -243,11 +248,6 @@ function initGraphics() {
     // start the game
     gameStarted = true;
     stage.update();
-}
-
-//generate a random number @param(max number)
-function getRandomNumber(max) {
-    return Math.floor(Math.random() * Math.floor(max));
 }
 
 //validates the user input to ensure the angle is between 0 and 180. If so there angle is set the user input
@@ -380,8 +380,6 @@ function initListeners() {
         stage.removeChild(instructions);
         startButtonHover.visible = startButton.visible = false;
         resetButton.visible = fireButton.visible = true;
-        // stage.removeChild(startButtonHover);
-        // stage.removeChild(startButton);
         //adds asteroid to game with given positions
         newGame();
     });
@@ -392,21 +390,28 @@ function fire() {
     //!success: checks to make sure there is no collision - the rocket will only fire if there wsa NOT a collison
     //rocketAtBase: checks to insure the rocket is at base so the user does not change the directions of the rocket mid-air
     if (!success && rocketAtBase) {
-        shotsFired = true;
-        rocket.visible = true;
-        updateAngle();
-        rocketAtBase = false;
+        if(!stage.contains(resetButton2)){
+            shotsFired = true;
+            rocket.visible = true;
+            updateAngle();
+            rocketAtBase = false;
+        }
     }
 }
 
 //resets the game both reset buttons use this function
 function reset() {
+    stage.addChild(base);
+    container.addChild(whiteArrow);
+    stage.addChild(rocket);
+    stage.removeChild(explosionAnimation);
     stage.removeChild(gameover);
     resetButton.visible = fireButton.visible = true;
     stage.removeChild(resetButton2);
     stage.removeChild(resetButtonPressed2);
     level = 1;
     score = 0;
+    asteroidSpeed = asteroidSpeedInitial;
     resetObjects();
     newGame();
 }
@@ -417,8 +422,12 @@ function start(){
 }
 function levelUp(){
     level++;
-    asteroidSpeed = asteroidSpeed / 3;
+    asteroidSpeed = asteroidSpeed - 1000;
+    console.log("Level: " + level + " Speed: "+ asteroidSpeed);
 }
+
+
+
 
 //resets all moving objects of the game
 function resetObjects() {
@@ -453,20 +462,65 @@ function resetRocketPosition() {
     rocketAtBase = true;
 }
 
+//generate a random number @param(max number)
+function getRandomNumber(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
+
+function leftRandom() {
+    asteroid.x = -70;
+    asteroid.y = getRandomNumber(400);
+}
+function middleRandom() {
+    asteroid.x = getRandomNumber(801);
+    asteroid.y = -70;
+}
+function rightRandom(){
+    asteroid.x = 800;
+    asteroid.y = getRandomNumber(400);
+}
+
+function directionGenerator() {
+    var randomDirection =getRandomNumber(3);
+    if (randomDirection == 0){
+        leftRandom();
+    }else if (randomDirection == 1){
+        middleRandom();
+    }else{
+        rightRandom();
+    }
+}
 //a new game is generated: the asteroid position is reset and a tween animations moves towards the base
 function newGame() {
     success = false;
-    asteroid.x = getRandomNumber(500);
-    asteroid.y = -70;
+    // asteroid.x = getRandomNumber(500);
+    // asteroid.y = -70;
+    directionGenerator();
     stage.addChild(asteroid);
-    createjs.Tween.get(asteroid).to({x: 360, y: 345}, asteroidSpeed).call(handleComplete);
+    createjs.Tween.get(asteroid).to({x: 360, y: 350}, asteroidSpeed).call(handleComplete);
 //the function after the asteroid hits the base
     function handleComplete() {
-        stage.addChild(gameover);
+
+        // explode asteroid
+        explosionAnimation.x = asteroid.x;
+        explosionAnimation.y = asteroid.y;
+        explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
+        stage.addChild(explosionAnimation);
+        explosionAnimation.gotoAndPlay("explode");
+        stage.removeChild(asteroid);
+        stage.removeChild(base);
+        stage.removeChild(rocket);
+        container.removeChild(whiteArrow);
         resetButton.visible = fireButton.visible = false;
-        stage.addChild(resetButton2);
-        stage.addChild(resetButtonPressed2);
-        resetButtonPressed2.visible = false;
+
+        setTimeout(function () {
+            stage.addChild(gameover);
+            stage.addChild(resetButton2);
+            stage.addChild(resetButtonPressed2);
+            resetButtonPressed2.visible = false;
+        }, 1250)
+
     }
     resetRocketPosition();
 }
