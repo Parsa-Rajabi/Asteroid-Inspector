@@ -297,7 +297,7 @@ function initMuteUnMuteButtons() {
 }
 
 
-function easyListener(button, buttonHover, buttonHoverOnClick){
+function easyListener(button, buttonHover, buttonHoverOnClick) {
     //miss attributes
     button.on("mouseover", function () {
         stage.addChild(buttonHover);
@@ -320,44 +320,51 @@ function easyListener(button, buttonHover, buttonHoverOnClick){
 
 function setTypeAcute() {
     checkBonus();
-    if(angleType == 0){
+    if (angleType == 0) {
         stage.addChild(correct);
         removeAngleTypes();
         score++;
     } else
         stage.addChild(incorrect);
-        removeAngleTypes();
+    removeAngleTypes();
 
 }
+
 function setTypeRight() {
     checkBonus();
-    if(angleType == 90){
+    if (angleType == 90) {
         stage.addChild(correct);
         removeAngleTypes();
         score++;
     } else
         stage.addChild(incorrect);
-        removeAngleTypes();
+    removeAngleTypes();
 
 }
+
 function setTypeObtuse() {
     checkBonus();
-    if(angleType == 180){
+    if (angleType == 180) {
         stage.addChild(correct);
         removeAngleTypes();
         score++;
     } else
         stage.addChild(incorrect);
-        removeAngleTypes();
+    removeAngleTypes();
 
 }
+
 /*
  * Add listeners to objects.
  */
 function initListeners() {
-    easyListener(acuteButton, acuteButtonHover, setTypeAcute);
-    easyListener(rightButton, rightButtonHover, setTypeRight);
-    easyListener(obtuseButton, obtuseButtonHover, setTypeObtuse);
+    // easyListener(acuteButton, acuteButtonHover, setTypeAcute);
+    // easyListener(rightButton, rightButtonHover, setTypeRight);
+    // easyListener(obtuseButton, obtuseButtonHover, setTypeObtuse);
+
+    acuteButton.on("click", setTypeAcute);
+    rightButton.on("click", setTypeRight);
+    obtuseButton.on("click", setTypeObtuse);
 
     //fire button attributes
     fireButton.on("mouseover", function () {
@@ -450,7 +457,7 @@ function fire() {
     //!success: checks to make sure there is no collision - the rocket will only fire if there wsa NOT a collison
     //rocketAtBase: checks to insure the rocket is at base so the user does not change the directions of the rocket mid-air
     if (!success && rocketAtBase) {
-        if(!stage.contains(resetButton2)){
+        if (!stage.contains(resetButton2)) {
             shotsFired = true;
             rocket.visible = true;
             updateAngle();
@@ -475,18 +482,18 @@ function reset() {
     resetObjects();
     newGame();
 }
-function start(){
+
+function start() {
     stage.addChild(instructions);
     resetButton.visible = fireButton.visible = false;
     stage.addChild(startButton);
 }
-function levelUp(){
+
+function levelUp() {
     level++;
     asteroidSpeed = asteroidSpeed - 1000;
-    console.log("Level: " + level + " Speed: "+ asteroidSpeed);
+    // console.log("Level: " + level + " Speed: "+ asteroidSpeed);
 }
-
-
 
 
 //resets all moving objects of the game
@@ -531,25 +538,28 @@ function leftRandom() {
     asteroid.x = -70;
     asteroid.y = getRandomNumber(400);
 }
+
 function middleRandom() {
     asteroid.x = getRandomNumber(801);
     asteroid.y = -70;
 }
-function rightRandom(){
+
+function rightRandom() {
     asteroid.x = 800;
     asteroid.y = getRandomNumber(400);
 }
 
 function directionGenerator() {
-    var randomDirection =getRandomNumber(3);
-    if (randomDirection == 0){
+    var randomDirection = getRandomNumber(3);
+    if (randomDirection == 0) {
         leftRandom();
-    }else if (randomDirection == 1){
+    } else if (randomDirection == 1) {
         middleRandom();
-    }else{
+    } else {
         rightRandom();
     }
 }
+
 //a new game is generated: the asteroid position is reset and a tween animations moves towards the base
 function newGame() {
     success = false;
@@ -558,6 +568,7 @@ function newGame() {
     directionGenerator();
     stage.addChild(asteroid);
     createjs.Tween.get(asteroid).to({x: 360, y: 350}, asteroidSpeed).call(handleComplete);
+
 //the function after the asteroid hits the base
     function handleComplete() {
 
@@ -583,17 +594,21 @@ function newGame() {
         }, 1250)
 
     }
+
     resetRocketPosition();
 }
 
-function bonusQuestion(){
-    if (stage.contains(miss)){
+function bonusQuestion() {
+    if (stage.contains(miss)) {
         stage.removeChild(miss);
     }
     stage.addChildAt(bonusQuestionWindow, 2);
-    stage.addChildAt(acuteButton, 3);
-    stage.addChildAt(rightButton, 3);
-    stage.addChildAt(obtuseButton, 3);
+    stage.addChild(acuteButton);
+    stage.addChild(rightButton);
+    stage.addChild(obtuseButton);
+    // stage.addChildAt(acuteButton, 3);
+    // stage.addChildAt(rightButton, 3);
+    // stage.addChildAt(obtuseButton, 3);
     // acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = true;
 
     setTimeout(function () {
@@ -606,7 +621,7 @@ function bonusQuestion(){
     }, 2500);
 }
 
-function removeAngleTypes(){
+function removeAngleTypes() {
     stage.removeChild(acuteButton);
     stage.removeChild(rightButton);
     stage.removeChild(obtuseButton);
@@ -614,18 +629,20 @@ function removeAngleTypes(){
 
 
 function checkBonus() {
-if(angle >= 0 && angle < 90){
-    console.log("acute angle");
-    angleType = 0;
-}else if (angle == 90){
-    console.log("right angle");
-    angleType = 90;
-}else if (angle > 90 && angle <= 180){
-    console.log("obtuse angle");
-    angleType = 180;
-}else
-    console.log("unknown angle");
+    if (angle >= 0 && angle < 90) {
+        // console.log("acute angle");
+        angleType = 0;
+    } else if (angle == 90) {
+        // console.log("right angle");
+        angleType = 90;
+    } else if (angle > 90 && angle <= 180) {
+        // console.log("obtuse angle");
+        angleType = 180;
+    } else {
+        // console.log("unknown angle");
+    }
 }
+
 //displays the nextButton on screen
 function showNextButton() {
     resetButton.visible = fireButton.visible = false;
@@ -673,6 +690,7 @@ var acuteButton, acuteButtonHover;
 var rightButton, rightButtonHover;
 var obtuseButton, obtuseButtonHover;
 var correct, incorrect;
+
 /*
  * Add files to be loaded here.
  */
@@ -767,7 +785,7 @@ function setupManifest() {
     }, {
         src: "images/angleType.png",
         id: "bonusQuestionWindow"
-    },{
+    }, {
         src: "images/correct.png",
         id: "correct"
     }, {
