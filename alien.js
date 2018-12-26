@@ -26,12 +26,12 @@ var levelText;
 var level = 1;
 var score = 0;
 var rocketAtBase;
-
 var asteroidContainer;
 var asteroidSpeedInitial = 20000;
 // var asteroidSpeedInitial =1500;
 var asteroidSpeed = asteroidSpeedInitial;
 
+var angleType;
 
 // Chrome 1+
 var isChrome = !!window.chrome && !!window.chrome.webstore;
@@ -175,14 +175,15 @@ function initGraphics() {
     // rocket.visible = false;
 
     //positioning of the fire button
-    fireButton.x = fireButtonPressed.x = 250;
+    fireButton.x = fireButtonPressed.x = 340;
     fireButton.y = fireButtonPressed.y = 500;
     stage.addChild(fireButton);
+
 
     //positioning of the fire button
     resetButton.x = resetButtonPressed.x = 425;
     resetButton.y = resetButtonPressed.y = 500;
-    stage.addChild(resetButton);
+    // stage.addChild(resetButton);
 
     //textInput
     inputBoxHTML = document.createElement('input');
@@ -316,13 +317,47 @@ function easyListener(button, buttonHover, buttonHoverOnClick){
 
 }
 
+
+function setTypeAcute() {
+    checkBonus();
+    if(angleType == 0){
+        stage.addChild(correct);
+        removeAngleTypes();
+        score++;
+    } else
+        stage.addChild(incorrect);
+        removeAngleTypes();
+
+}
+function setTypeRight() {
+    checkBonus();
+    if(angleType == 90){
+        stage.addChild(correct);
+        removeAngleTypes();
+        score++;
+    } else
+        stage.addChild(incorrect);
+        removeAngleTypes();
+
+}
+function setTypeObtuse() {
+    checkBonus();
+    if(angleType == 180){
+        stage.addChild(correct);
+        removeAngleTypes();
+        score++;
+    } else
+        stage.addChild(incorrect);
+        removeAngleTypes();
+
+}
 /*
  * Add listeners to objects.
  */
 function initListeners() {
-    easyListener(acuteButton, acuteButtonHover, checkBonus);
-    easyListener(rightButton, rightButtonHover, checkBonus);
-    easyListener(obtuseButton, obtuseButtonHover, checkBonus);
+    easyListener(acuteButton, acuteButtonHover, setTypeAcute);
+    easyListener(rightButton, rightButtonHover, setTypeRight);
+    easyListener(obtuseButton, obtuseButtonHover, setTypeObtuse);
 
     //fire button attributes
     fireButton.on("mouseover", function () {
@@ -345,7 +380,7 @@ function initListeners() {
         playSound("click");
     });
     resetButtonPressed.on("mouseout", function () {
-        stage.addChild(resetButton);
+        // stage.addChild(resetButton);
         stage.removeChild(resetButtonPressed);
     });
     //once pressed, the fire function will be called
@@ -532,6 +567,8 @@ function newGame() {
         explosionAnimation.scaleX = explosionAnimation.scaleY = 1.4; // adjust as needed to hide asteroid.
         stage.addChild(explosionAnimation);
         explosionAnimation.gotoAndPlay("explode");
+        playSound("explosionSound");
+
         stage.removeChild(asteroid);
         stage.removeChild(base);
         stage.removeChild(rocket);
@@ -550,32 +587,44 @@ function newGame() {
 }
 
 function bonusQuestion(){
-    stage.addChildAt(angleType, 2);
+    if (stage.contains(miss)){
+        stage.removeChild(miss);
+    }
+    stage.addChildAt(bonusQuestionWindow, 2);
     stage.addChildAt(acuteButton, 3);
     stage.addChildAt(rightButton, 3);
     stage.addChildAt(obtuseButton, 3);
+    // acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = true;
 
-    // acuteButton.visible = rightButton.visible = obtuseButton.visible = true;
     setTimeout(function () {
-        stage.removeChild(angleType);
-        stage.removeChild(acuteButton);
-        stage.removeChild(rightButton);
-        stage.removeChild(obtuseButton);
-        // acuteButton.visible = rightButton.visible = obtuseButton.visible = false;
+        acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = false;
+        stage.removeChild(bonusQuestionWindow);
+        stage.removeChild(correct);
+        stage.removeChild(incorrect);
+        removeAngleTypes();
 
     }, 2500);
-    // resetRocketPosition();
-    //check to insure the user does not go in to the negative points
-    // if (score > 0) {
-    //     score--;
-    // } else {
-    //     score = 0;
-    // }
+}
+
+function removeAngleTypes(){
+    stage.removeChild(acuteButton);
+    stage.removeChild(rightButton);
+    stage.removeChild(obtuseButton);
 }
 
 
 function checkBonus() {
-
+if(angle >= 0 && angle < 90){
+    console.log("acute angle");
+    angleType = 0;
+}else if (angle == 90){
+    console.log("right angle");
+    angleType = 90;
+}else if (angle > 90 && angle <= 180){
+    console.log("obtuse angle");
+    angleType = 180;
+}else
+    console.log("unknown angle");
 }
 //displays the nextButton on screen
 function showNextButton() {
@@ -619,10 +668,11 @@ var resetButton2, resetButtonPressed2;
 var hit;
 var nextButton, nextButtonHover;
 var asteroid;
-var angleType;
+var bonusQuestionWindow;
 var acuteButton, acuteButtonHover;
 var rightButton, rightButtonHover;
 var obtuseButton, obtuseButtonHover;
+var correct, incorrect;
 /*
  * Add files to be loaded here.
  */
@@ -716,8 +766,14 @@ function setupManifest() {
         id: "obtuseButtonHover"
     }, {
         src: "images/angleType.png",
-        id: "angleType"
-    },
+        id: "bonusQuestionWindow"
+    },{
+        src: "images/correct.png",
+        id: "correct"
+    }, {
+        src: "images/incorrect.png",
+        id: "incorrect"
+    }
     ];
 }
 
@@ -794,8 +850,12 @@ function handleFileLoad(event) {
         obtuseButton = new createjs.Bitmap(event.result);
     } else if (event.item.id == "obtuseButtonHover") {
         obtuseButtonHover = new createjs.Bitmap(event.result);
-    } else if (event.item.id == "angleType") {
-        angleType = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "bonusQuestionWindow") {
+        bonusQuestionWindow = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "correct") {
+        correct = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "incorrect") {
+        incorrect = new createjs.Bitmap(event.result);
     }
 }
 
