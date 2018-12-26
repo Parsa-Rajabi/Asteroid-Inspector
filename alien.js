@@ -83,6 +83,7 @@ function update(event) {
                     score++;
                     success = true;
                     playSound("explosionSound");
+                    bonusQuestion();
                     newGame();
                     levelUp();
                     // setTimeout(function () {
@@ -294,10 +295,34 @@ function initMuteUnMuteButtons() {
     stage.addChild(unmuteButton);
 }
 
+
+function easyListener(button, buttonHover, buttonHoverOnClick){
+    //miss attributes
+    button.on("mouseover", function () {
+        stage.addChild(buttonHover);
+        // stage.removeChild(button);
+        buttonHover.visible = true;
+        button.visible = false;
+        playSound("click");
+    });
+    buttonHover.on("mouseout", function () {
+        button.visible = true;
+        buttonHover.visible = false;
+        // stage.addChild(button);
+        // stage.removeChild(buttonHover);
+    });
+    //once pressed, the fire function will be called
+    buttonHover.on("click", buttonHoverOnClick);
+
+}
+
 /*
  * Add listeners to objects.
  */
 function initListeners() {
+    easyListener(acuteButton, acuteButtonHover, checkBonus());
+    easyListener(rightButton, rightButtonHover, checkBonus());
+    easyListener(obtuseButton, obtuseButtonHover, checkBonus());
 
     //fire button attributes
     fireButton.on("mouseover", function () {
@@ -467,7 +492,6 @@ function getRandomNumber(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-
 function leftRandom() {
     asteroid.x = -70;
     asteroid.y = getRandomNumber(400);
@@ -525,6 +549,24 @@ function newGame() {
     resetRocketPosition();
 }
 
+function bonusQuestion(){
+    stage.addChildAt(angleType, 1);
+    setTimeout(function () {
+        stage.removeChild(angleType);
+    }, 1750);
+    // resetRocketPosition();
+    //check to insure the user does not go in to the negative points
+    // if (score > 0) {
+    //     score--;
+    // } else {
+    //     score = 0;
+    // }
+}
+
+
+function checkBonus() {
+
+}
 //displays the nextButton on screen
 function showNextButton() {
     resetButton.visible = fireButton.visible = false;
