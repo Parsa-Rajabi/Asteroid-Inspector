@@ -730,6 +730,20 @@ function handleFileLoad(event) {
         startButtonHover = new createjs.Bitmap(event.result);
     } else if (event.item.id == "instructions") {
         instructions = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "acuteButton") {
+        acuteButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "acuteButtonHover") {
+        acuteButtonHover = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "rightButton") {
+        rightButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "rightButtonHover") {
+        rightButtonHover = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "obtuseButton") {
+        obtuseButton = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "obtuseButtonHover") {
+        obtuseButtonHover = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "angleType") {
+        angleType = new createjs.Bitmap(event.result);
     }
 }
 
