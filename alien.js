@@ -612,7 +612,7 @@ function bonusQuestion() {
     // acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = true;
 
     setTimeout(function () {
-        acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = false;
+        // acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = false;
         stage.removeChild(bonusQuestionWindow);
         stage.removeChild(correct);
         stage.removeChild(incorrect);
@@ -732,7 +732,7 @@ function setupManifest() {
         src: "images/hit.png",
         id: "hit"
     }, {
-        src: "images/miss.png",
+        src: "images/miss_small.png",
         id: "miss"
     }, {
         src: "images/missHover.png",
