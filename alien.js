@@ -320,9 +320,9 @@ function easyListener(button, buttonHover, buttonHoverOnClick){
  * Add listeners to objects.
  */
 function initListeners() {
-    easyListener(acuteButton, acuteButtonHover, checkBonus());
-    easyListener(rightButton, rightButtonHover, checkBonus());
-    easyListener(obtuseButton, obtuseButtonHover, checkBonus());
+    easyListener(acuteButton, acuteButtonHover, checkBonus);
+    easyListener(rightButton, rightButtonHover, checkBonus);
+    easyListener(obtuseButton, obtuseButtonHover, checkBonus);
 
     //fire button attributes
     fireButton.on("mouseover", function () {
@@ -550,10 +550,20 @@ function newGame() {
 }
 
 function bonusQuestion(){
-    stage.addChildAt(angleType, 1);
+    stage.addChildAt(angleType, 2);
+    stage.addChildAt(acuteButton, 3);
+    stage.addChildAt(rightButton, 3);
+    stage.addChildAt(obtuseButton, 3);
+
+    // acuteButton.visible = rightButton.visible = obtuseButton.visible = true;
     setTimeout(function () {
         stage.removeChild(angleType);
-    }, 1750);
+        stage.removeChild(acuteButton);
+        stage.removeChild(rightButton);
+        stage.removeChild(obtuseButton);
+        // acuteButton.visible = rightButton.visible = obtuseButton.visible = false;
+
+    }, 2500);
     // resetRocketPosition();
     //check to insure the user does not go in to the negative points
     // if (score > 0) {
