@@ -567,7 +567,10 @@ var resetButton2, resetButtonPressed2;
 var hit;
 var nextButton, nextButtonHover;
 var asteroid;
-
+var angleType;
+var acuteButton, acuteButtonHover;
+var rightButton, rightButtonHover;
+var obtuseButton, obtuseButtonHover;
 /*
  * Add files to be loaded here.
  */
@@ -641,8 +644,28 @@ function setupManifest() {
     }, {
         src: "images/instructions.png",
         id: "instructions"
-    }
-
+    }, {
+        src: "images/AcuteButton.png",
+        id: "acuteButton"
+    }, {
+        src: "images/acuteButtonHover.png",
+        id: "acuteButtonHover"
+    }, {
+        src: "images/RightButton.png",
+        id: "rightButton"
+    }, {
+        src: "images/RightButtonHover.png",
+        id: "rightButtonHover"
+    }, {
+        src: "images/ObtuseButton.png",
+        id: "obtuseButton"
+    }, {
+        src: "images/ObtuseButtonHover.png",
+        id: "obtuseButtonHover"
+    }, {
+        src: "images/angleType.png",
+        id: "angleType"
+    },
     ];
 }
 
