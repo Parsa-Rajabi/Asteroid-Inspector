@@ -493,8 +493,11 @@ function resetObjects() {
 
 //after a rocket is missed, a message for a duration of 1750 milli seconds appears so the user tries again
 function missedAsteroid() {
+    if (stage.contains(levelUpWindow)){
+        removeBonusAndLevelUp();
+    }
     // resetObjects();
-    stage.addChildAt(miss, 1);
+    stage.addChild(miss)
     setTimeout(function () {
         stage.removeChild(miss);
     }, 1750);
@@ -627,6 +630,15 @@ function bonusQuestion() {
 
 }
 
+function removeBonusAndLevelUp() {
+    // acuteButtonHover.visible = rightButtonHover.visible = obtuseButtonHover.visible = false;
+    stage.removeChild(bonusQuestionWindow);
+    stage.removeChild(correct);
+    stage.removeChild(incorrect);
+    removeAngleTypes();
+    stage.removeChild(levelUpWindow);
+
+}
 function removeAngleTypes() {
     stage.removeChild(acuteButton);
     stage.removeChild(rightButton);
