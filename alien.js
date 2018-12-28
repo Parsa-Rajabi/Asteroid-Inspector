@@ -222,8 +222,8 @@ function initGraphics() {
     inputBoxHTML.style.fontSize = "20px";
     inputBoxHTML.style.color = "white";
     inputBoxHTML.maxLength = "3";
-    inputBoxHTML.onkeyup = updateAngle;
-    // inputBoxHTML.onchange= updateAngle;
+    // inputBoxHTML.onkeyup = updateAngle;
+    inputBoxHTML.onchange= updateAngle;
 
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
@@ -602,7 +602,7 @@ function bonusQuestion() {
     bonusQuestionWindow.y = shiftDownBouns;
     // acuteButtonHover.y = rightButtonHover.y = obtuseButtonHover.y = shiftDownBouns;
     acuteButton.y = rightButton.y = obtuseButton.y = shiftDownBouns;
-
+    correct.y = incorrect.y = shiftDownBouns;
     stage.addChild(bonusQuestionWindow);
     stage.addChild(acuteButton);
     stage.addChild(rightButton);
