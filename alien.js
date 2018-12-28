@@ -21,14 +21,19 @@ var container;
 var inputBox;
 var inputBoxHTML;
 var shotsFired = false;
-var rocketSpeed = 10;
+
 var levelText;
 var level = 1;
 var score = 0;
 var rocketAtBase;
 var asteroidContainer;
-var asteroidSpeedInitial = 20000;
-// var asteroidSpeedInitial =1500;
+//normal game speed
+// var asteroidSpeedInitial = 20000;
+// var rocketSpeed = 10;
+
+//for testing and debugging
+var asteroidSpeedInitial =900000;
+var rocketSpeed = 1;
 var asteroidSpeed = asteroidSpeedInitial;
 
 var angleType;
@@ -154,6 +159,8 @@ function initGraphics() {
     asteroidContainer = new createjs.Container();
     asteroidContainer.addChild(asteroid);
 
+    whiteArrow.x = 10;
+    whiteArrow.y = 10;
     container.addChild(whiteArrow);
     stage.addChild(container);
 
@@ -166,8 +173,10 @@ function initGraphics() {
 
     rocket.x = 412;
     rocket.y = 475;
+
     stage.addChild(rocket);
     rocket.visible = false;
+
 
     rocket.regX = -10;
     rocket.regY = 25.5;
@@ -209,8 +218,8 @@ function initGraphics() {
     inputBoxHTML.style.fontSize = "20px";
     inputBoxHTML.style.color = "white";
     inputBoxHTML.maxLength = "3";
-    // inputBoxHTML.onkeyup = updateAngle;
-    inputBoxHTML.onchange= updateAngle;
+    inputBoxHTML.onkeyup = updateAngle;
+    // inputBoxHTML.onchange= updateAngle;
 
     document.body.appendChild(inputBoxHTML);
     inputBox = new createjs.DOMElement(inputBoxHTML);
@@ -523,9 +532,16 @@ function missedAsteroid() {
 //sets the position of rocket to origin and sets shorts fired to false - ready to be launched again
 function resetRocketPosition() {
     rocket.x = 412;
-    rocket.y = 475;
+    rocket.y = 472;
+
+    rocket.regX = -3;
+    rocket.regY = 17;
+
     shotsFired = false;
-    rocket.visible = false;
+    //remove after debugging
+    rocket.visible = true;
+
+    // rocket.visible = false;
     rocketAtBase = true;
 }
 
