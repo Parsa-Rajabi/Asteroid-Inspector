@@ -331,42 +331,6 @@ function easyListener(button, buttonHover, buttonHoverOnClick) {
 }
 
 
-function setTypeAcute() {
-    checkBonus();
-    if (angleType == 0) {
-        stage.addChild(correct);
-        removeAngleTypes();
-        score++;
-    } else
-        stage.addChild(incorrect);
-    removeAngleTypes();
-
-}
-
-function setTypeRight() {
-    checkBonus();
-    if (angleType == 90) {
-        stage.addChild(correct);
-        removeAngleTypes();
-        score++;
-    } else
-        stage.addChild(incorrect);
-    removeAngleTypes();
-
-}
-
-function setTypeObtuse() {
-    checkBonus();
-    if (angleType == 180) {
-        stage.addChild(correct);
-        removeAngleTypes();
-        score++;
-    } else
-        stage.addChild(incorrect);
-    removeAngleTypes();
-
-}
-
 /*
  * Add listeners to objects.
  */
@@ -534,6 +498,7 @@ function missedAsteroid() {
     setTimeout(function () {
         stage.removeChild(miss);
     }, 1750);
+
     resetRocketPosition();
     //check to insure the user does not go in to the negative points
     if (score > 0) {
@@ -633,10 +598,17 @@ function bonusQuestion() {
     if (stage.contains(miss)) {
         stage.removeChild(miss);
     }
-    stage.addChildAt(bonusQuestionWindow, 2);
+    var shiftDownBouns = 65;
+    bonusQuestionWindow.y = shiftDownBouns;
+    // acuteButtonHover.y = rightButtonHover.y = obtuseButtonHover.y = shiftDownBouns;
+    acuteButton.y = rightButton.y = obtuseButton.y = shiftDownBouns;
+
+    stage.addChild(bonusQuestionWindow);
     stage.addChild(acuteButton);
     stage.addChild(rightButton);
     stage.addChild(obtuseButton);
+    stage.addChild(levelUpWindow);
+
     // stage.addChildAt(acuteButton, 3);
     // stage.addChildAt(rightButton, 3);
     // stage.addChildAt(obtuseButton, 3);
@@ -648,14 +620,54 @@ function bonusQuestion() {
         stage.removeChild(correct);
         stage.removeChild(incorrect);
         removeAngleTypes();
+        stage.removeChild(levelUpWindow);
 
     }, 2500);
+
+
 }
 
 function removeAngleTypes() {
     stage.removeChild(acuteButton);
     stage.removeChild(rightButton);
     stage.removeChild(obtuseButton);
+}
+
+
+function setTypeAcute() {
+    checkBonus();
+    if (angleType == 0) {
+        stage.addChild(correct);
+        removeAngleTypes();
+        score++;
+    } else
+        stage.addChild(incorrect);
+    removeAngleTypes();
+
+}
+
+function setTypeRight() {
+    checkBonus();
+    if (angleType == 90) {
+        stage.addChild(correct);
+        removeAngleTypes();
+        score++;
+    } else
+        stage.addChild(incorrect);
+    removeAngleTypes();
+
+}
+
+function setTypeObtuse() {
+    checkBonus();
+    if (angleType == 180) {
+        stage.addChild(correct);
+        removeAngleTypes();
+        score++;
+    } else
+        stage.addChild(incorrect);
+    removeAngleTypes();
+
 }
 
 
@@ -721,16 +733,17 @@ var acuteButton, acuteButtonHover;
 var rightButton, rightButtonHover;
 var obtuseButton, obtuseButtonHover;
 var correct, incorrect;
+var levelUpWindow;
 
 /*
  * Add files to be loaded here.
  */
 function setupManifest() {
     manifest = [{
-        src: "images/mute.png",
+        src: "images/mute_white.png",
         id: "mute"
     }, {
-        src: "images/unmute.png",
+        src: "images/unmute_white.png",
         id: "unmute"
     }, {
         src: "images/background.png",
@@ -822,6 +835,9 @@ function setupManifest() {
     }, {
         src: "images/incorrect.png",
         id: "incorrect"
+    }, {
+        src: "images/levelup.png",
+        id: "levelUpWindow"
     }
     ];
 }
@@ -905,6 +921,8 @@ function handleFileLoad(event) {
         correct = new createjs.Bitmap(event.result);
     } else if (event.item.id == "incorrect") {
         incorrect = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "levelUpWindow") {
+        levelUpWindow = new createjs.Bitmap(event.result);
     }
 }
 
