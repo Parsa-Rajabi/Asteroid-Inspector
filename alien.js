@@ -28,12 +28,13 @@ var score = 0;
 var rocketAtBase;
 var asteroidContainer;
 //normal game speed
-// var asteroidSpeedInitial = 20000;
-// var rocketSpeed = 10;
+var asteroidSpeedInitial = 20000;
+var rocketSpeed = 10;
 
 //for testing and debugging
-var asteroidSpeedInitial =900000;
-var rocketSpeed = 1;
+// var asteroidSpeedInitial =2000;
+// var rocketSpeed = 1;
+
 var asteroidSpeed = asteroidSpeedInitial;
 
 var angleType;
@@ -100,7 +101,7 @@ function update(event) {
                 //there was no collision
                 else {
                     //if the rocket goes out of bounds to the left or right of screen
-                    //reset it's position to origin at base - ready to be shot again
+                    //resetGame it's position to origin at base - ready to be shot again
                     if (rocket.x >= 765 || rocket.x <= 0) {
                         missedAsteroid()
                     } else if (rocket.y <= 0) {
@@ -172,7 +173,10 @@ function initGraphics() {
     stage.addChild(base);
 
     rocket.x = 412;
-    rocket.y = 475;
+    rocket.y = 472;
+
+    rocket.regX = -3;
+    rocket.regY = 17;
 
     stage.addChild(rocket);
     rocket.visible = false;
@@ -389,7 +393,7 @@ function initListeners() {
     fireButtonPressed.on("click", fire);
 
 
-    //reset button attributes
+    //resetGame button attributes
     resetButton.on("mouseover", function () {
         stage.addChild(resetButtonPressed);
         stage.removeChild(resetButton);
@@ -400,10 +404,10 @@ function initListeners() {
         stage.removeChild(resetButtonPressed);
     });
     //once pressed, the fire function will be called
-    resetButtonPressed.on("click", reset);
+    resetButtonPressed.on("click", resetGame);
 
-    //the gameover reset button properties
-    //reset button 2attributes
+    //the gameover resetGame button properties
+    //resetGame button 2attributes
     resetButton2.on("mouseover", function () {
         stage.addChild(resetButtonPressed2);
         resetButtonPressed2.visible = true;
@@ -418,7 +422,7 @@ function initListeners() {
         // stage.removeChild(resetButtonPressed2);
     });
     //once pressed, the fire function will be called
-    resetButtonPressed2.on("click", reset);
+    resetButtonPressed2.on("click", resetGame);
 
     //miss attributes
     nextButton.on("mouseover", function () {
@@ -473,10 +477,17 @@ function fire() {
             rocketAtBase = false;
         }
     }
+    //after rocket leaves the base, the values of the angle set box resetGame
+    if(!rocketAtBase){
+        inputBoxHTML.value = '';
+    }
 }
 
-//resets the game both reset buttons use this function
-function reset() {
+//resets the game both resetGame buttons use this function
+function resetGame() {
+
+    asteroid.scaleX = asteroid.scaleY = 1;
+
     stage.addChild(base);
     container.addChild(whiteArrow);
     stage.addChild(rocket);
@@ -501,6 +512,9 @@ function start() {
 function levelUp() {
     level++;
     asteroidSpeed = asteroidSpeed - 1000;
+
+    asteroid.scaleX = asteroid.scaleX -0.05;
+    asteroid.scaleY = asteroid.scaleY  -0.05;
     // console.log("Level: " + level + " Speed: "+ asteroidSpeed);
 }
 
@@ -539,7 +553,7 @@ function resetRocketPosition() {
 
     shotsFired = false;
     //remove after debugging
-    rocket.visible = true;
+    // rocket.visible = true;
 
     // rocket.visible = false;
     rocketAtBase = true;
@@ -552,7 +566,7 @@ function getRandomNumber(max) {
 
 function leftRandom() {
     asteroid.x = -70;
-    asteroid.y = getRandomNumber(400);
+    asteroid.y = getRandomNumber(420);
 }
 
 function middleRandom() {
@@ -562,7 +576,8 @@ function middleRandom() {
 
 function rightRandom() {
     asteroid.x = 800;
-    asteroid.y = getRandomNumber(400);
+    asteroid.y = getRandomNumber(420);
+
 }
 
 function directionGenerator() {
@@ -576,14 +591,14 @@ function directionGenerator() {
     }
 }
 
-//a new game is generated: the asteroid position is reset and a tween animations moves towards the base
+//a new game is generated: the asteroid position is resetGame and a tween animations moves towards the base
 function newGame() {
     success = false;
     // asteroid.x = getRandomNumber(500);
     // asteroid.y = -70;
     directionGenerator();
     stage.addChild(asteroid);
-    createjs.Tween.get(asteroid).to({x: 360, y: 350}, asteroidSpeed).call(handleComplete);
+    createjs.Tween.get(asteroid).to({x: 360, y: 420}, asteroidSpeed).call(handleComplete);
 
 //the function after the asteroid hits the base
     function handleComplete() {
