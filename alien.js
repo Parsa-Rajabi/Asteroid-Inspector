@@ -113,10 +113,6 @@ function update(event) {
             console.log("error is: " + e);
         }
 
-        if (shotsFired) {
-
-        }
-
         //text boxes
 
         //new text(text, font, color)
@@ -138,8 +134,44 @@ function update(event) {
         rocket.rotation = -angle;
 
         updateSelectPositions();
-    }//ends the game
 
+
+        if(level == 1 || level == 12){
+            stage.removeChild(back11);
+            stage.addChildAt(back1,0);
+        } else if(level == 2 || level == 13){
+            stage.removeChild(back1);
+            stage.addChildAt(back2,0);
+        } else if(level == 3 || level == 14){
+            stage.removeChild(back2);
+            stage.addChildAt(back3,0);
+        } else if(level == 4 || level == 15){
+            stage.removeChild(back3);
+            stage.addChildAt(back4,0);
+        } else if(level == 5 || level == 16){
+            stage.removeChild(back4);
+            stage.addChildAt(back5,0);
+        } else if(level == 6 || level == 17){
+            stage.removeChild(back5);
+            stage.addChildAt(back6,0);
+        } else if(level == 7 || level == 18){
+            stage.removeChild(back6);
+            stage.addChildAt(back7,0);
+        } else if(level == 8 || level == 19){
+            stage.removeChild(back7);
+            stage.addChildAt(back8,0);
+        } else if(level == 9 || level == 20){
+            stage.removeChild(back8);
+            stage.addChildAt(back9,0);
+        } else if(level == 10 || level == 21){
+            stage.removeChild(back9);
+            stage.addChildAt(back10,0);
+        } else if(level == 11 || level == 22){
+            stage.removeChild(back10);
+            stage.addChildAt(back11,0);
+        }else
+            stage.addChild(back1);
+    }//ends the game
     stage.update(event);
 }
 
@@ -151,7 +183,7 @@ function convertToRad(degAngle) {
 
 function initGraphics() {
 
-    stage.addChild(background);
+    stage.addChild(back1);
 
     container = new createjs.Container();
     container.x = 410;
@@ -462,6 +494,7 @@ function resetGame() {
     stage.removeChild(resetButtonPressed2);
     level = 1;
     score = 0;
+    stage.addChildAt(back1,0);
     asteroidSpeed = asteroidSpeedInitial;
     resetObjects();
     newGame();
@@ -480,6 +513,7 @@ function levelUp() {
     asteroid.scaleX = asteroid.scaleX -0.05;
     asteroid.scaleY = asteroid.scaleY  -0.05;
     // console.log("Level: " + level + " Speed: "+ asteroidSpeed);
+
 }
 
 
@@ -746,7 +780,7 @@ var rightButton, rightButtonHover;
 var obtuseButton, obtuseButtonHover;
 var correct, incorrect;
 var levelUpWindow;
-
+var back1, back2, back3,  back4, back5, back6, back7, back8, back9, back10, back11;
 /*
  * Add files to be loaded here.
  */
@@ -969,6 +1003,28 @@ function handleFileLoad(event) {
         incorrect = new createjs.Bitmap(event.result);
     } else if (event.item.id == "levelUpWindow") {
         levelUpWindow = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back1") {
+        back1 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back2") {
+        back2 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back3") {
+        back3 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back4") {
+        back4 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back5") {
+        back5 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back6") {
+        back6 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back7") {
+        back7 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back8") {
+        back8 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back9") {
+        back9 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back10") {
+        back10 = new createjs.Bitmap(event.result);
+    } else if (event.item.id == "back11") {
+        back11 = new createjs.Bitmap(event.result);
     }
 }
 
