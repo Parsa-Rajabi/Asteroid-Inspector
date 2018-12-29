@@ -850,7 +850,41 @@ function setupManifest() {
     }, {
         src: "images/levelup.png",
         id: "levelUpWindow"
+    }, {
+        src: "images/background_1.png",
+        id: "back1"
+    }, {
+        src: "images/background_2.png",
+        id: "back2"
+    }, {
+        src: "images/background_3.png",
+        id: "back3"
+    }, {
+        src: "images/background_4.png",
+        id: "back4"
+    }, {
+        src: "images/background_5.png",
+        id: "back5"
+    }, {
+        src: "images/background_6.png",
+        id: "back6"
+    }, {
+        src: "images/background_7.png",
+        id: "back7"
+    }, {
+        src: "images/background_8.png",
+        id: "back8"
+    }, {
+        src: "images/background_9.png",
+        id: "back9"
+    }, {
+        src: "images/background_10.png",
+        id: "back10"
+    }, {
+        src: "images/background_11.png",
+        id: "back11"
     }
+
     ];
 }
 
