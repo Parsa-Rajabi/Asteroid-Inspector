@@ -497,7 +497,7 @@ function missedAsteroid() {
         removeBonusAndLevelUp();
     }
     // resetObjects();
-    stage.addChild(miss)
+    stage.addChildAt(miss,1);
     setTimeout(function () {
         stage.removeChild(miss);
     }, 1750);
@@ -566,7 +566,7 @@ function newGame() {
     // asteroid.y = -70;
     directionGenerator();
     stage.addChild(asteroid);
-    createjs.Tween.get(asteroid).to({x: 360, y: 420}, asteroidSpeed).call(handleComplete);
+    createjs.Tween.get(asteroid).to({x: 360, y: 400}, asteroidSpeed).call(handleComplete);
 
 //the function after the asteroid hits the base
     function handleComplete() {
