@@ -135,7 +135,7 @@ function update(event) {
 
         updateSelectPositions();
 
-
+        //updates the background based on the level
         if(level == 1 || level == 12){
             stage.removeChild(back11);
             stage.addChildAt(back1,0);
