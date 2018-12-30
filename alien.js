@@ -658,7 +658,7 @@ function bonusQuestion() {
         removeAngleTypes();
         stage.removeChild(levelUpWindow);
 
-    }, 2500);
+    }, 3500);
 
 
 }
