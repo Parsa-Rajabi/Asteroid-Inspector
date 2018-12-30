@@ -556,8 +556,7 @@ function resetRocketPosition() {
     shotsFired = false;
     //remove after debugging
     // rocket.visible = true;
-
-    // rocket.visible = false;
+    rocket.visible = false;
     rocketAtBase = true;
 }
 
