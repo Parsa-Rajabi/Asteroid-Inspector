@@ -4,12 +4,7 @@
  * @author Parsa Rajabi - ParsaRajabiPR@gmail.com
  * October 2018
  */
-    // TODO: DONE 1) Make the asteroid move towards the base
-    // TODO: DONE 2) Make it so the angle can not be changed after the rocket has been launched
-    // TODO: DONE 3) Create the explosion after the rocket hits the asteroid - use the same one from Colin's game
-    // TODO: DONE 4) Finish the miss/hit screens (photoshop)
-    // TODO: 5) implement the level feature: as the level increases, the speed of asteriod++
-    // TODO: 6) Make the angle bonus thing - it needs to be a pop up after the user has entered an angle and is ready to launch
+
 //// VARIABLES ////
 var mute = false;
 var FPS = 20;
@@ -92,10 +87,6 @@ function update(event) {
                     bonusQuestion();
                     newGame();
                     levelUp();
-                    // setTimeout(function () {
-                    //     stage.addChild(hit);
-                    //     showNextButton();
-                    // }, 1100);
 
                 }
                 //there was no collision
@@ -180,9 +171,7 @@ function convertToRad(degAngle) {
     return (degAngle * (Math.PI / 180));
 }
 
-
 function initGraphics() {
-
     stage.addChild(back1);
 
     container = new createjs.Container();
@@ -516,7 +505,6 @@ function levelUp() {
 
 }
 
-
 //resets all moving objects of the game
 function resetObjects() {
     //stops the createjs.tween animiation on asteroid
@@ -659,8 +647,6 @@ function bonusQuestion() {
         stage.removeChild(levelUpWindow);
 
     }, 3500);
-
-
 }
 
 function removeBonusAndLevelUp() {
@@ -731,13 +717,6 @@ function checkBonus() {
     }
 }
 
-//displays the nextButton on screen
-function showNextButton() {
-    resetButton.visible = fireButton.visible = false;
-    stage.addChild(nextButtonHover);
-    stage.addChild(nextButton);
-    nextButtonHover.visible = false;
-}
 
 //deals with the nextButton on click
 function nextButtonPressed() {
